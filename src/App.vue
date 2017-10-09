@@ -1,13 +1,16 @@
 <template>
-  <div id="app" style="width: 100%; height: 100%;">
+  <div id="app">
     <router-view v-if="fullscreen"></router-view>
-    <!-- <template v-else>
-      <AppHeader></AppHeader>
-      <AppSider></AppSider>
-      <AppContainer>
-        <router-view></router-view>
-      </AppContainer>
-    </template> -->
+    <el-container class="container" v-else>
+      <el-header></el-header>
+      <el-container>
+        <el-aside width="200px"></el-aside>
+        <el-container>
+          <el-main></el-main>
+          <el-footer></el-footer>
+        </el-container>
+      </el-container>
+    </el-container>
   </div>
 </template>
 
@@ -28,3 +31,12 @@
     }
   }
 </script>
+
+<style lang="stylus" scoped>
+  #app
+  .container {
+    width 100%
+    height @width
+  }
+
+</style>
