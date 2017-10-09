@@ -2,28 +2,26 @@
   <div id="app">
     <router-view v-if="fullscreen"></router-view>
     <el-container class="container" v-else>
-      <el-header></el-header>
-      <el-container>
-        <el-aside width="200px"></el-aside>
-        <el-container>
-          <el-main></el-main>
-          <el-footer></el-footer>
-        </el-container>
+      <AppAside></AppAside>
+      <el-container direction="vertical">
+        <AppHeader></AppHeader>
+        <el-main></el-main>
+        <AppFooter></AppFooter>
       </el-container>
     </el-container>
   </div>
 </template>
 
 <script>
-  // import { AppHeader, AppSider, AppContainer } from '@/components/Layout'
+  import { AppHeader, AppAside, AppFooter } from '@/components/Layout'
 
   export default {
     name: 'App',
-    // components: {
-    //   AppHeader,
-    //   AppSider,
-    //   AppContainer
-    // },
+    components: {
+      AppHeader,
+      AppAside,
+      AppFooter
+    },
     computed: {
       fullscreen () {
         return this.$route.meta.fullscreen

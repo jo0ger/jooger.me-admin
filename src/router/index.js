@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import routes from './routes'
-// import { iviewMessage } from '@/components/Common'
+import { Message } from 'element-ui'
 
 Vue.use(Router)
 
@@ -31,7 +31,7 @@ export const composeWithStore = store => {
       // 已登录
       if (to.name === 'Login') {
         // 已登录 && To login page
-        // iviewMessage.info('已登录')
+        Message.info('已登录')
         if (from.name) {
           // 从别的页面通过路由跳转（浏览器前进后退）
           return _next(false)
@@ -45,7 +45,7 @@ export const composeWithStore = store => {
       // 未登录
       if (to.name !== 'Login') {
         if (from.name) {
-          // iviewMessage.warning('请先登录')
+          Message.warning('请先登录')
         }
         if (from.name === 'Login') {
           return _next(false)
