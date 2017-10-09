@@ -14,8 +14,8 @@ import { Message } from 'element-ui'
 const logMsg = (msg = '', type = 'success') => {
   if (msg) {
     Message[type] && Message[type]({
-      duration: 3,
-      content: msg
+      duration: 3000,
+      message: msg
     })
   }
 }
@@ -59,7 +59,7 @@ fetcher.interceptors.response.use(response => {
   }
   return response.data
 }, error => {
-  const status = error.response && error.response.status || error.code
+  const status = error.response ? error.response.status : error.code
   const message = error.message ? error.message : `请求错误${status ? `，code:${status}` : ''}`
   logMsg(message, 'error')
   return error.response || {
@@ -68,7 +68,7 @@ fetcher.interceptors.response.use(response => {
   }
 })
 
-const wrap = (url, type = 'get') => (config = {}) => fetcher.request({ ...config, method: type, url: `/backend/${url}` })
+const wrap = (url, type = 'get') => (config = {}) => fetcher.request({ ...config, method: type, url: `/backend${url}` })
 
 export default {
   auth: {
@@ -80,24 +80,24 @@ export default {
     list: wrap('/articles'),
     item: id => wrap(`/articles/${id}`),
     like: id => wrap(`/articles/${id}/like`, 'post'),
-    edit: id => wrap(`/articles/${id}`, 'patch'),
+    update: id => wrap(`/articles/${id}`, 'patch'),
     delete: id => wrap(`/article/${id}`, 'delete')
   },
   tag: {
     create: wrap('/tags', 'post'),
     list: wrap('/tags'),
     item: id => wrap(`/tags/${id}`),
-    edit: id => wrap(`/tags/${id}`, 'patch'),
+    update: id => wrap(`/tags/${id}`, 'patch'),
     delete: id => wrap(`/tags/${id}`, 'delete')
   },
   option: {
     fetch: wrap('/options'),
-    edit: wrap('/options', 'patch')
+    update: wrap('/options', 'patch')
   },
   user: {
     list: wrap('/users'),
     item: id => wrap(`/users/${id}`),
-    edit: id => wrap(`/users/${id}`, 'patch'),
+    update: id => wrap(`/users/${id}`, 'patch'),
     delete: id => wrap(`/users/${id}`, 'delete')
   }
 }

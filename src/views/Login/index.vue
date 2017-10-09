@@ -117,8 +117,7 @@
 
     .login-bg {
       full()
-      background url('~@/static/image/login-bg.svg') no-repeat center center
-      background-size cover
+      background url('~@/static/image/login-bg.svg') center center
       background-color $white
       filter blur(2px)
     }
@@ -149,10 +148,11 @@
         }
 
         .avatar {
-          width 64px;
-          height 64px
+          width 72px;
+          height 72px
           margin-bottom 8px
           border-radius 50%
+          border 4px solid alpha($white, .2)
         }
 
         .name {
