@@ -10,7 +10,7 @@ export default {
   auth: {
     authCookieKey: 'jooger.me.sid',
     authTokenKey: 'jooger.me.token',
-    authInfoCacheKey: 'jooger.me.cache'
+    authInfoCacheKey: 'jooger.me.info'
   },
   storage: {
     userKey: 'jooger.me.user',

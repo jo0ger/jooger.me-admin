@@ -22,5 +22,6 @@
     box-shadow 4px 4px 40px 0 alpha($black, .05)
     text-align center
     line-height 48px
+    color $text-color-secondary
   }
 </style>

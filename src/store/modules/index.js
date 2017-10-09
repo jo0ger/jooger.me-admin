@@ -8,8 +8,10 @@
 
 import * as app from './app'
 import * as auth from './auth'
+import * as article from './article'
 
 export default {
   app: { namespaced: true, ...app },
-  auth: { namespaced: true, ...auth }
+  auth: { namespaced: true, ...auth },
+  article: { namespaced: true, ...article }
 }

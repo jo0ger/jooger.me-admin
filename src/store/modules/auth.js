@@ -11,9 +11,7 @@ import { api } from '@/service'
 import {
   setLocalStorageItem,
   getLocalStorageItem,
-  setSessionStorageItem,
-  getSessionStorageItem,
-  removeSessionStorageItem
+  removeLocalStorageItem
 } from '@/utils'
 
 const LOGIN_REQUEST = 'LOGIN_REQUEST'
@@ -38,7 +36,7 @@ try {
   localAuthInfo = {}
 }
 
-const getTokenFromLocal = () => getSessionStorageItem(config.auth.authTokenKey)
+const getTokenFromLocal = () => getLocalStorageItem(config.auth.authTokenKey)
 
 const getDefaultInfo = () => ({ ...localAuthInfo })
 
@@ -75,9 +73,10 @@ export const mutations = {
     state.loading = false
     state.token = ''
   },
-  [FETCH_INFO_SUCCESS]: (state, data) => {
+  [FETCH_INFO_SUCCESS]: (state, { token, info }) => {
     state.loading = false
-    state.info = data
+    state.info = info
+    state.token = token
   },
   [EDIT_INFO_REQUEST]: state => (state.loading = true),
   [EDIT_INFO_FAILURE]: state => (state.loading = false),
@@ -95,16 +94,16 @@ export const actions = {
     commit(LOGIN_REQUEST)
     const { success, data } = await api.auth.login({ data: params }).catch(err => commit(LOGIN_FAILURE, err))
     if (success) {
+      console.log(state)
       commit(LOGIN_SUCCESS, data.token)
-      setSessionStorageItem(config.auth.authTokenKey, data.token)
-      await dispatch('getInfo', data.id)
-      setLocalStorageItem(config.auth.authInfoCacheKey, state.info)
+      setLocalStorageItem(config.auth.authTokenKey, data.token)
+      await dispatch('getInfo')
     } else {
       commit(LOGIN_FAILURE)
     }
     return success
   },
-  async logout ({ commit, dispatch }, params = {}) {
+  async logout ({ commit, dispatch, state }, params = {}) {
     if (state.loading) {
       return
     }
@@ -118,15 +117,16 @@ export const actions = {
     }
     return success
   },
-  async getInfo ({ commit }, userId) {
+  async getInfo ({ commit, state }) {
     if (state.loading) {
       return
     }
     commit(FETCH_INFO_REQUEST)
-    const { success, data } = await api.user.item(userId)().catch(err => {
+    const { success, data } = await api.auth.info().catch(err => {
       commit(FETCH_INFO_FAILURE, err)
     })
     if (success) {
+      setLocalStorageItem(config.auth.authInfoCacheKey, data.info)
       commit(FETCH_INFO_SUCCESS, data)
     } else {
       commit(FETCH_INFO_FAILURE)
@@ -147,7 +147,7 @@ export const actions = {
     return success
   },
   clearAuthInfo ({ commit }) {
-    removeSessionStorageItem(config.auth.authTokenKey)
+    removeLocalStorageItem(config.auth.authTokenKey)
     commit(CLEAR_INFO)
   }
 }

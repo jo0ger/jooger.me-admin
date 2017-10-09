@@ -52,7 +52,7 @@
             break
           case 'logout':
             await this.$store.dispatch('auth/logout')
-            window.location.reload()
+            this.$router.push({ name: 'Login' })
             break
           default:
             break
@@ -81,7 +81,7 @@
       color $text-color-secondary
       &:hover {
         color $base-color
-        background-color alpha($base-color, .15)
+        background-color alpha($base-color, .1)
       }
     }
 
@@ -97,7 +97,7 @@
 
         &:hover {
           color $base-color
-          background-color alpha($base-color, .15)
+          background-color alpha($base-color, .1)
         }
       }
     }

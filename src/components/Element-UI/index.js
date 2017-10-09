@@ -15,10 +15,23 @@ import {
   Footer,
   Message,
   Button,
+  ButtonGroup,
   Menu,
   Submenu,
   MenuItem,
-  Tooltip
+  Tooltip,
+  Tabs,
+  TabPane,
+  Table,
+  TableColumn,
+  Card,
+  Tag,
+  Breadcrumb,
+  BreadcrumbItem,
+  Pagination,
+  Input,
+  Form,
+  FormItem
 } from 'element-ui'
 
 Vue.component(Container.name, Container)
@@ -28,7 +41,20 @@ Vue.component(Main.name, Main)
 Vue.component(Footer.name, Footer)
 Vue.component(Message.name, Message)
 Vue.component(Button.name, Button)
+Vue.component(ButtonGroup.name, ButtonGroup)
 Vue.component(Menu.name, Menu)
 Vue.component(Submenu.name, Submenu)
 Vue.component(MenuItem.name, MenuItem)
 Vue.component(Tooltip.name, Tooltip)
+Vue.component(Tabs.name, Tabs)
+Vue.component(TabPane.name, TabPane)
+Vue.component(Table.name, Table)
+Vue.component(TableColumn.name, TableColumn)
+Vue.component(Card.name, Card)
+Vue.component(Tag.name, Tag)
+Vue.component(Breadcrumb.name, Breadcrumb)
+Vue.component(BreadcrumbItem.name, BreadcrumbItem)
+Vue.component(Pagination.name, Pagination)
+Vue.component(Input.name, Input)
+Vue.component(Form.name, Form)
+Vue.component(FormItem.name, FormItem)

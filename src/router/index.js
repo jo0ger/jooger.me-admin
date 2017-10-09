@@ -19,7 +19,7 @@ export {
 }
 
 export const composeWithStore = store => {
-  router.beforeEach((to, from, next) => {
+  router.beforeEach(async (to, from, next) => {
     const _next = (config) => {
       if (config !== false) {
         // TODO: 页面切换显示页面Loading
@@ -27,6 +27,7 @@ export const composeWithStore = store => {
       }
       next(config)
     }
+
     if (store.getters['auth/isLogin']) {
       // 已登录
       if (to.name === 'Login') {
