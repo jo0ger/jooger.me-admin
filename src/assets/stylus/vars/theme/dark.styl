@@ -1,0 +1,13 @@
+$dark-name	= 'dark'
+$dark-prefix = '$' + $dark-name + '-'
+$dark-items = {
+	color: #1d202e,
+	color-shadow: #282e40,
+	color-deep: #0f151f,
+	card-bg-color: #282e40,
+	card-bg-color-active: #272e42,
+}
+
+for item, val in $dark-items {
+	define($dark-prefix + item, lookup('' + val) or val)
+}

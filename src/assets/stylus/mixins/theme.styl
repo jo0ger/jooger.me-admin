@@ -1,0 +1,29 @@
+// theme({
+//   color: theme-color,
+//   background:,
+//   border: 1px solid theme-deep-color
+// })
+// TODO: getValue里的them-.*匹配还需要在精确一些
+
+$themes = 'dark' 'light'
+$placeholder = 'theme-'
+
+getValue($theme, $value)
+  $v = null
+  if $value
+    for prop, i in $value
+      $replace-value = match($placeholder + '.*', '' + prop) ? lookup(replace($placeholder, $theme + '-', '$' + prop)) : prop
+      if length($value) > 1
+        push($v, $replace-value)
+      else
+        $v = $replace-value
+  else
+    $v = lookup('$' + $theme + '-color')
+  $v
+
+theme()
+  $props = arguments[0] if length(arguments) > 0
+  for theme in $themes
+    body.{theme} &
+      for prop, value in $props
+        {prop} getValue(theme, value)
