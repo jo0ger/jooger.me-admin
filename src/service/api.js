@@ -39,9 +39,10 @@ fetcher.interceptors.response.use(response => {
   }
   switch (response.data.code) {
     case codeMap.UNAUTHORIZED:
-      logMsg(response.data.message, 'error')
+      if (!response.config.url.includes('/auth/info')) {
+        logMsg(response.data.message, 'error')
+      }
       store.dispatch('auth/clearAuthInfo')
-      window.location.reload()
       break
     case codeMap.FAILED:
     case codeMap.FORBIDDEN:
@@ -73,7 +74,8 @@ const wrap = (url, type = 'get') => (config = {}) => fetcher.request({ ...config
 export default {
   auth: {
     login: wrap('/auth/local/login', 'post'),
-    logout: wrap('/auth/local/logout')
+    logout: wrap('/auth/local/logout'),
+    info: wrap('/auth/info')
   },
   article: {
     create: wrap('/articles', 'post'),

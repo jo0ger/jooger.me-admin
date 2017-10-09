@@ -7,7 +7,7 @@
       <el-menu class="menu-list"
         :default-active="defaultActive"
         :collapse="asideCollapse"
-        active-text-color="#FA5555"
+        active-text-color="#409EFF"
         router>
         <template v-for="menu in routesMenu">
           <el-submenu
@@ -94,7 +94,7 @@
       width 64px
 
       .logo-field {
-        margin 8px 0
+        margin 4px 0
       }
 
       .iconfont {
@@ -114,15 +114,29 @@
 
   .aside {
     .el-menu-item {
+      position relative
       &:focus
       &:hover {
-        background-color alpha($base-color, .15)
+        background-color alpha($base-color, .1)
+      }
+
+      &.is-active {
+        background-color alpha($base-color, .1)
+
+        &::after {
+          content ''
+          position absolute
+          top 0
+          right 0
+          bottom 0
+          border-right 3px solid $base-color
+        }
       }
     }
 
     .el-submenu__title {
       &:hover {
-        background-color alpha($base-color, .15)
+        background-color alpha($base-color, .1)
       }
     }
   }
