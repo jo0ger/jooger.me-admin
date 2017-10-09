@@ -6,9 +6,22 @@
 
 'use strict'
 
-import Login from '@/views/Login/index'
+import Home from '@/views/Home'
+import Login from '@/views/Login'
+import PageNotFound from '@/views/Error/404'
+
+const Blog = () => import(/* webpackChunkName: "Blog" */ '@/views/Blog')
 
 export default [
+  {
+    path: '',
+    redirect: {
+      name: 'Home'
+    },
+    meta: {
+      hidden: true
+    }
+  },
   {
     path: '/login',
     name: 'Login',
@@ -17,6 +30,31 @@ export default [
       title: '登录',
       hidden: true,
       fullscreen: true
+    }
+  },
+  {
+    path: '/404',
+    name: 'Page404',
+    component: PageNotFound,
+    meta: {
+      hidden: true,
+      fullscreen: true
+    }
+  },
+  {
+    path: '/home',
+    name: 'Home',
+    title: '首页',
+    icon: 'home',
+    component: Home
+  },
+  {
+    path: '/blog',
+    component: Blog,
+    meta: {
+      title: '博客',
+      icon: 'blog',
+      hasSubmenu: true
     }
   }
 ]

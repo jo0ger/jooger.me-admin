@@ -103,9 +103,13 @@
   @import '~@/assets/stylus/vars/index'
   @import '~@/assets/stylus/mixins/index'
 
+  $dark = #272c41
+  $dark-secondary = #1f222e
+  $text-color-dark = alpha($white, .67)
+
   full() {
     width 100%
-    height 100%
+    height @width
   }
 
   .login-page {
@@ -115,7 +119,8 @@
       full()
       background url('~@/static/image/login-bg.svg') no-repeat center center
       background-size cover
-      filter blur(4px)
+      background-color $white
+      filter blur(2px)
     }
 
     .login-field {
@@ -126,8 +131,8 @@
       width 320px
       height auto
       padding 40px
-      background linear-gradient(45deg, $dark 0%, #1f222e 100%)
-      box-shadow 0 0 100px alpha($dark, .8)
+      background linear-gradient(45deg, $dark 0%, $dark-secondary 100%)
+      box-shadow 0 0 100px $dark
       border-radius 4px
       transition all .3s ease
 
@@ -137,7 +142,7 @@
 
         .title, .name {
           margin-bottom 36px
-          color $text-color-secondary-dark
+          color $text-color-dark
         }
         .title {
           text-transform uppercase
@@ -176,7 +181,7 @@
             position absolute
             top 8px
             left 36px
-            color $text-color-secondary-dark
+            color $text-color-dark
           }
 
           & > .iconfont:not(.icon-check) {
@@ -187,14 +192,14 @@
           .icon-check {
             left auto
             right 30px
-            color $green-6
+            color $green
           }
 
           & > input {
             width 100%
             height 42px
             line-height 40px
-            color: $text-color-secondary-dark;
+            color: $text-color-dark;
             margin-top -2px
             background #32364a
             padding 10px 65px
