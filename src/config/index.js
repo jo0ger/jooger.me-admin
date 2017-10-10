@@ -19,7 +19,7 @@ export default {
   service: {
     url: '/',
     method: 'get',
-    baseURL: __PROD__ ? 'http://api.jooger.me/api' : 'http://localhost:3001/api',
+    baseURL: __PROD__ ? 'https://api.jooger.me/api' : 'http://localhost:3001/api',
     headers: {
       'X-Requested-With': 'XMLHttpRequest',
       'Accept': 'application/json'

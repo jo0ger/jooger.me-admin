@@ -9,7 +9,7 @@
       <el-form-item>
         <el-input v-model="articleFilter.title" @keyup.native.enter="handleSearch" size="mini" placeholder="请输入..."></el-input>
       </el-form-item>
-      <el-form-item style="float: right">
+      <el-form-item>
         <el-button type="primary" @click="handleSearch" icon="el-icon-search" size="mini">查询</el-button>
       </el-form-item>
     </el-form>
