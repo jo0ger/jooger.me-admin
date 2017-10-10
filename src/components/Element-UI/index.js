@@ -37,7 +37,8 @@ import {
   Loading,
   Badge,
   Select,
-  Option
+  Option,
+  Upload
 } from 'element-ui'
 
 Vue.use(Loading.directive)
@@ -71,3 +72,4 @@ Vue.component(FormItem.name, FormItem)
 Vue.component(Badge.name, Badge)
 Vue.component(Select.name, Select)
 Vue.component(Option.name, Option)
+Vue.component(Upload.name, Upload)

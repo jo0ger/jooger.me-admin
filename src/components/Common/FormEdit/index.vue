@@ -2,7 +2,7 @@
   <div class="form-edit">
     <slot></slot>
     <transition name="summary" appear>
-      <div class="summary" v-if="canEdit">
+      <div class="summary" :style="summaryStyle" v-if="canEdit">
         <div class="wrapper">
           <el-button class="btn cancel-btn" plain type="danger" v-if="showCancel" @click="handleCancel">取消</el-button>
           <el-button class="btn submit-btn" type="primary" @click="handleSubmit">提交</el-button>
@@ -13,6 +13,8 @@
 </template>
 
 <script>
+  import { mapGetters } from 'vuex'
+
   export default {
     name: 'FormEdit',
     props: {
@@ -23,6 +25,16 @@
       canEdit: {
         type: Boolean,
         default: true
+      }
+    },
+    computed: {
+      ...mapGetters({
+        asideCollapse: 'app/asideCollapse'
+      }),
+      summaryStyle () {
+        return {
+          left: this.asideCollapse ? '64px' : '200px'
+        }
       }
     },
     methods: {
@@ -42,12 +54,11 @@
 
   .form-edit {
     .summary {
-      position absolute
+      position fixed
       right 0
-      bottom 0
-      left 0
+      bottom 48px
       background-color $white
-      box-shadow 0 0 40px -10px alpha($black, .2)
+      box-shadow 0 -5px 40px -10px alpha($black, .2)
       transition all .5s $fuck
 
       .wrapper {

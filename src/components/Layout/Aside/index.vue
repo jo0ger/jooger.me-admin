@@ -71,7 +71,7 @@
     background-color $white
     box-shadow 4px 4px 20px 0 alpha($black, .01)
     overflow visible
-    transition width .3s $ease
+    transition width .5s $fuck
 
     .admin-field {
       position relative
