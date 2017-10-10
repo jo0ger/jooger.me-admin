@@ -31,8 +31,12 @@ import {
   Pagination,
   Input,
   Form,
-  FormItem
+  FormItem,
+  Loading,
+  Badge
 } from 'element-ui'
+
+Vue.use(Loading.directive)
 
 Vue.component(Container.name, Container)
 Vue.component(Header.name, Header)
@@ -58,3 +62,4 @@ Vue.component(Pagination.name, Pagination)
 Vue.component(Input.name, Input)
 Vue.component(Form.name, Form)
 Vue.component(FormItem.name, FormItem)
+Vue.component(Badge.name, Badge)

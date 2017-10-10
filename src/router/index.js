@@ -28,6 +28,10 @@ export const composeWithStore = store => {
       next(config)
     }
 
+    if (!store.getters['auth/isLogin']) {
+      await store.dispatch('auth/getInfo')
+    }
+
     if (store.getters['auth/isLogin']) {
       // 已登录
       if (to.name === 'Login') {
