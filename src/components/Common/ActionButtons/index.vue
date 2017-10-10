@@ -20,7 +20,7 @@
     name: 'ActionButtons',
     data () {
       const actionMap = [
-        { key: 'create-article', title: '新建文章', icon: 'plus' },
+        { key: 'create', title: '新建', icon: 'plus' },
         { key: 'go-to-top', title: '返回顶部', icon: 'go-to-top' }
       ]
       return {
@@ -32,9 +32,11 @@
         actionButtonVisible: 'app/actionButtonVisible'
       }),
       activeActionMap () {
-        const { goToTop } = this.actionButtonVisible
+        const { goToTop, create } = this.actionButtonVisible
         return this.actionMap.filter(item => {
           if (item.key === 'go-to-top' && !goToTop) {
+            return false
+          } else if (item.key === 'create' && !create) {
             return false
           }
           return true
@@ -46,6 +48,10 @@
         console.log(key)
         switch (key) {
           case 'create-article':
+            const pageName = this.$route.name
+            if (pageName === 'Blog-Articles') {
+              // TODO: go to create article page
+            }
             break
           case 'go-to-top':
             scrollTo(0, 500, { easing: easing['fuck'] })
@@ -93,7 +99,7 @@
           transform translate3d(0, 0, 0) scale(.9)
         }
 
-        &.create-article {
+        &.create {
           color $white
           background-color $base-color
           box-shadow 4px 4px 20px 0 alpha($base-color, .8)

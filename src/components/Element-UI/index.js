@@ -8,6 +8,8 @@
 
 import Vue from 'vue'
 import {
+  Row,
+  Col,
   Container,
   Header,
   Aside,
@@ -33,11 +35,15 @@ import {
   Form,
   FormItem,
   Loading,
-  Badge
+  Badge,
+  Select,
+  Option
 } from 'element-ui'
 
 Vue.use(Loading.directive)
 
+Vue.component(Row.name, Row)
+Vue.component(Col.name, Col)
 Vue.component(Container.name, Container)
 Vue.component(Header.name, Header)
 Vue.component(Aside.name, Aside)
@@ -63,3 +69,5 @@ Vue.component(Input.name, Input)
 Vue.component(Form.name, Form)
 Vue.component(FormItem.name, FormItem)
 Vue.component(Badge.name, Badge)
+Vue.component(Select.name, Select)
+Vue.component(Option.name, Option)

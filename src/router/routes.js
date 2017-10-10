@@ -69,7 +69,10 @@ export default [
         component: BlogArticles,
         meta: {
           title: '文章',
-          icon: 'article'
+          icon: 'article',
+          action: {
+            create: true
+          }
         }
       },
       {
@@ -78,7 +81,10 @@ export default [
         component: BlogTags,
         meta: {
           title: '标签',
-          icon: 'tag'
+          icon: 'tag',
+          action: {
+            create: true
+          }
         }
       }
     ]

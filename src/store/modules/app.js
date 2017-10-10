@@ -14,12 +14,14 @@ export const state = {
   routes: [],
   asideCollapse: false,
   actionButtonVisible: {
-    goToTop: false
+    goToTop: false,
+    create: false
   }
 }
 
 export const getters = {
   routes: state => state.routes,
+  routesMenu: state => state.routes.filter(route => !route.meta || !route.meta.hidden),
   asideCollapse: state => state.asideCollapse,
   actionButtonVisible: state => state.actionButtonVisible
 }

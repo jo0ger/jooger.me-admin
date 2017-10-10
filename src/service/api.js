@@ -83,7 +83,7 @@ export default {
     item: id => wrap(`/articles/${id}`),
     like: id => wrap(`/articles/${id}/like`, 'post'),
     update: id => wrap(`/articles/${id}`, 'patch'),
-    delete: id => wrap(`/article/${id}`, 'delete')
+    delete: id => wrap(`/articles/${id}`, 'delete')
   },
   tag: {
     create: wrap('/tags', 'post'),

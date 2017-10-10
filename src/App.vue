@@ -8,6 +8,7 @@
         <el-container style="overflow: hidden" direction="vertical">
           <AppHeader></AppHeader>
           <el-main class="app-main" @scroll.native.stop.prevent="handleScroll">
+            <Guide class="app-guide" v-if="$route.name !== 'Home'"></Guide>
             <router-view></router-view>
           </el-main>
           <AppFooter></AppFooter>
@@ -21,7 +22,7 @@
 <script>
   import { mapGetters } from 'vuex'
   import { AppHeader, AppAside, AppFooter } from '@/components/Layout'
-  import { PageLoading, ActionButtons } from '@/components/Common'
+  import { PageLoading, ActionButtons, Guide } from '@/components/Common'
 
   export default {
     name: 'App',
@@ -30,7 +31,8 @@
       AppAside,
       AppFooter,
       PageLoading,
-      ActionButtons
+      ActionButtons,
+      Guide
     },
     data () {
       return {
@@ -72,7 +74,12 @@
   }
 
   .app-main {
+    position relative
     padding 24px
+  }
+
+  .app-guide {
+    margin-bottom 24px
   }
 
 </style>

@@ -55,39 +55,12 @@ input::-ms-clear, input::-ms-reveal {
   display: none;
 }
 
-input {
-  width: 175px;
-  height: $input-height-base;
-  line-height: $input-height-base;
-  background: $input-bg;
-  font-size: $font-size-base;
-  font-weight: $font-weight-normal;
-  border: none;
-  -webkit-appearance: none;
-  
-  &::-webkit-input-placeholder {
-    color: $input-placeholder-color;
-  }
-  &::-moz-placeholder {
-    color: $input-placeholder-color;
-  }
-  &::-moz-placeholder {  /* Firefox 19+ */
-    color: $input-placeholder-color;
-  }
-  &::-ms-input-placeholder {
-    color: $input-placeholder-color;
-  }
-  &:focus {
-    outline: none;
-  }
-}
-
 textarea {
   resize: none;
 }
 
 ::selection {
-  background: $blue;
+  background: $base-color;
   color: $white;
 }
 
@@ -112,15 +85,10 @@ body a {
   }
 
   &[disabled] {
-    color: $disabled-color;
+    color: $text-color-placeholder;
     cursor: not-allowed;
     pointer-events: none;
   }
-}
-
-// Utility classes
-.clearfix {
-  clearfix();
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -201,4 +169,17 @@ img {
   height: auto;
   vertical-align: middle;
   border: 0;
+}
+
+.el-card {
+  margin-bottom 24px
+  box-shadow 4px 4px 20px 0 alpha($black, .01)
+  border-radius 0
+  border none
+  .el-card__header {
+    padding 12px 24px
+  }
+  .el-card__body {
+    padding 24px
+  }
 }

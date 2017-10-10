@@ -76,6 +76,20 @@
           <span>{{ scope.row.createdAt | fmtDate('yyyy-MM-dd hh:mm') }}</span>
         </template>
       </el-table-column>
+      <el-table-column
+        prop="state"
+        label="状态">
+        <template scope="scope">
+          <div class="state published" v-if="scope.row.state === 1">
+            <i class="indicator"></i>
+            <span class="text">已发布</span>
+          </div>
+          <div class="state un-published" v-else>
+            <i class="indicator"></i>
+            <span class="text">未发布</span>
+          </div>
+        </template>
+      </el-table-column>
       <el-table-column label="操作">
         <template scope="scope">
           <el-button
@@ -154,6 +168,7 @@
 
   .articles-table {
     color $text-color-secondary
+    font-size $font-size-base
 
     .title {
       color $text-color
@@ -161,6 +176,57 @@
     .keyword {
       display inline-block
       margin-right 10px
+    }
+    .state {
+      flexLayout(, flex-start)
+      i {
+        position relative
+        display inline-block
+        width 16px
+        height @width
+        border-radius 50%
+
+        &::after {
+          content ''
+          position absolute
+          top 50%
+          left 50%
+          width 10px
+          height @width
+          border-radius 50%
+          transform translate(-50%, -50%)
+        }
+      }      
+
+      &.published {
+        i {
+          background-color alpha($green, .4)
+          &::after {
+            background-color $green
+          }
+        }
+
+        .text {
+          color $green
+        }
+      }
+
+      &.un-published {
+        i {
+          background-color alpha($yellow, .4)
+          &::after {
+            background-color $yellow
+          }
+        }
+        .text {
+          color $yellow
+        }
+      }
+
+      .text {
+        line-height 1
+        margin-left 5px
+      }
     }
     .publish-btn {
       color $green

@@ -1,7 +1,14 @@
+/**
+ * @desc Router entry
+ * @author Jooger <zzy1198258955@163.com>
+ * @date 9 Oct 2017
+ */
+
 import Vue from 'vue'
 import Router from 'vue-router'
-import routes from './routes'
 import { Message } from 'element-ui'
+import routes from './routes'
+import { isType } from '@/utils'
 
 Vue.use(Router)
 
@@ -25,6 +32,7 @@ export const composeWithStore = store => {
         // TODO: 页面切换显示页面Loading
         // AppLoadingBar.start()
       }
+      store.commit('app/SET_ACTION_BUTTON_VISIBLE', Object.assign({}, to.meta ? to.meta.action : null))
       next(config)
     }
 
@@ -75,8 +83,22 @@ export const composeWithStore = store => {
     _next()
   })
 
-  router.afterEach(route => {
+  router.afterEach((to, from) => {
     // TODO: 页面切换结束隐藏页面Loading
     // AppLoadingBar.finish()
+    // ActionButtons组件适配
+    const toAction = to.meta && to.meta.action ? to.meta.action : {}
+    const fromAction = from.meta && from.meta.action ? from.meta.action : {}
+    const action = {}
+    for (let key in fromAction) {
+      if (toAction.hasOwnProperty(key)) {
+        action[key] = toAction[key]
+      } else {
+        if (isType(fromAction[key], 'Boolean')) {
+          action[key] = !fromAction[key]
+        }
+      }
+    }
+    store.commit('app/SET_ACTION_BUTTON_VISIBLE', action)
   })
 }
