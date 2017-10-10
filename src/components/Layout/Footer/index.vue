@@ -23,5 +23,6 @@
     text-align center
     line-height 48px
     color $text-color-secondary
+    border-top 1px solid $border-color-4
   }
 </style>

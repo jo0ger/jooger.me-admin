@@ -1,8 +1,17 @@
 <template>
   <el-aside class="aside" :class="{ collapse: asideCollapse }" :width="asideCollapse ? '64px' : '200px'">
-    <router-link class="logo-field" to="/">
+    <!-- <router-link class="logo-field" to="/">
       <img src="~@/static/image/logo.svg" alt="" class="logo">
-    </router-link>
+    </router-link> -->
+    <div class="admin-field">
+      <router-link class="avatar" :to="{ name: 'Auth' }">
+        <img :src="authInfo.avatar" :alt="authInfo.name">
+      </router-link>
+      <div class="info">
+        <h3 class="name">{{ authInfo.name }}</h3>
+        <p class="slogan">{{ authInfo.slogan }}</p>
+      </div>
+    </div>
     <div class="menu-field">
       <el-menu class="menu-list"
         :default-active="defaultActive"
@@ -44,7 +53,8 @@
     computed: {
       ...mapGetters({
         appRoutes: 'app/routes',
-        asideCollapse: 'app/asideCollapse'
+        asideCollapse: 'app/asideCollapse',
+        authInfo: 'auth/info'
       }),
       routesMenu () {
         return this.appRoutes.filter(route => {
@@ -68,24 +78,55 @@
     overflow visible
     transition width .3s $ease
 
-    .logo-field {
-      display block
-      height 40px
-      line-height @height
-      margin 24px 0
+    .admin-field {
+      position relative
+      padding 24px 12px
       text-align center
+      overflow hidden
 
-      .logo {
-        width 32px
+      .avatar {
+        img {
+          width 64px
+          border-radius 50%
+        }
       }
+
+      .info {
+        margin-top 8px
+
+        .name {
+          font-size 20px
+        }
+
+        .slogan {
+          margin-top 8px
+          font-size 12px
+          color $text-color-secondary
+        }
+      }
+
     }
+
+    // .logo-field {
+    //   display block
+    //   height 40px
+    //   line-height @height
+    //   margin 24px 0
+    //   text-align center
+
+    //   .logo {
+    //     width 32px
+    //   }
+    // }
 
     .menu-field {
       .menu-list {
+        letter-spacing .5px
         border none
 
         .iconfont {
           margin-right 5px
+          font-size 14px
         }
       }
     }
@@ -93,8 +134,20 @@
     &.collapse {
       width 64px
 
-      .logo-field {
-        margin 4px 0
+      // .logo-field {
+      //   margin 4px 0
+      // }
+
+      .admin-field {
+        padding 8px
+        .avatar {
+          img {
+            width 32px
+          }
+        }
+        .info {
+          display none
+        }
       }
 
       .iconfont {
@@ -113,15 +166,28 @@
   @import '~@/assets/stylus/mixins/index'
 
   .aside {
-    .el-menu-item {
-      position relative
+    .el-menu-item
+    .el-submenu__title {
       &:focus
       &:hover {
-        background-color alpha($base-color, .1)
+        background-color unset
+        color $base-color
+
+        i {
+          color $base-color
+        }
       }
+    }
+      
+    .el-menu-item {
+      position relative
+      height 48px
+      line-height @height
+      font-size $font-size-base
 
       &.is-active {
         background-color alpha($base-color, .1)
+        font-weight bold
 
         &::after {
           content ''
@@ -135,8 +201,12 @@
     }
 
     .el-submenu__title {
-      &:hover {
-        background-color alpha($base-color, .1)
+      height 48px
+      line-height @height
+      font-size $font-size-base
+
+      .el-submenu__icon-arrow {
+        color $text-color-placeholder
       }
     }
   }

@@ -36,14 +36,14 @@ try {
   localAuthInfo = {}
 }
 
-const getTokenFromLocal = () => getLocalStorageItem(config.auth.authTokenKey)
+// const getTokenFromLocal = () => getLocalStorageItem(config.auth.authTokenKey)
 
 const getDefaultInfo = () => ({ ...localAuthInfo })
 
 export const state = {
   loading: false,
   info: getDefaultInfo(),
-  token: getTokenFromLocal()
+  token: null
 }
 
 export const getters = {
