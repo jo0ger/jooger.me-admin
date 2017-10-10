@@ -1,8 +1,5 @@
 <template>
   <el-aside class="aside" :class="{ collapse: asideCollapse }" :width="asideCollapse ? '64px' : '200px'">
-    <!-- <router-link class="logo-field" to="/">
-      <img src="~@/static/image/logo.svg" alt="" class="logo">
-    </router-link> -->
     <div class="admin-field">
       <router-link class="avatar" :to="{ name: 'Auth' }">
         <img :src="authInfo.avatar" :alt="authInfo.name">

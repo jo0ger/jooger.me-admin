@@ -107,8 +107,7 @@
     }
   }
 
-  .action-list-enter, .action-list-leave-to
-  /* .action-list-leave-active for below version 2.1.8 */ {
+  .action-list-enter, .action-list-leave-to {
     opacity 0
     transform translateX(200%)
   }

@@ -117,7 +117,7 @@
 
     .login-bg {
       full()
-      background url('~@/static/image/login-bg.svg') center center
+      background url('~@@/static/image/login-bg.svg') center center
       background-color $white
       filter blur(2px)
     }
