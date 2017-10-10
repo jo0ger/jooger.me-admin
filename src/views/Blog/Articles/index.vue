@@ -1,11 +1,20 @@
 <template>
-  <section class="blog-articles-page">
-    <el-tabs v-model="articleStatus">
+  <el-card class="blog-articles-page">
+    <el-tabs v-model="articleState">
+      <el-tab-pane label="全部" name="-1"></el-tab-pane>
       <el-tab-pane label="已发布" name="1"></el-tab-pane>
       <el-tab-pane label="未发布" name="0"></el-tab-pane>
     </el-tabs>
+    <el-form :inline="true" :model="articleFilter" class="demo-form-inline">
+      <el-form-item>
+        <el-input v-model="articleFilter.title" @keyup.native.enter="handleSearch" size="mini" placeholder="请输入..."></el-input>
+      </el-form-item>
+      <el-form-item style="float: right">
+        <el-button type="primary" @click="handleSearch" icon="el-icon-search" size="mini">查询</el-button>
+      </el-form-item>
+    </el-form>
     <ArticlesList
-      :list="list"
+      :list="articleList"
       :pagination="pagination"
       :loading="articleListFetching"
       @page-change="handlePageChange"
@@ -13,7 +22,7 @@
       @edit="handleEdit"
       @delete="handleDelete">
     </ArticlesList>
-  </section>
+  </el-card>
 </template>
 
 <script>
@@ -27,8 +36,11 @@
     },
     data () {
       return {
-        articleStatus: '1',
-        pageMap: [1, 1]
+        articleState: '-1',
+        pageMap: [1, 1],
+        articleFilter: {
+          title: ''
+        }
       }
     },
     computed: {
@@ -36,46 +48,54 @@
         articleList: 'article/list',
         articleListFetching: 'article/listFetching',
         pagination: 'article/pagination'
-      }),
-      list () {
-        return this.articleList.concat(this.articleList).concat(this.articleList).concat(this.articleList).concat(this.articleList).concat(this.articleList).concat(this.articleList).concat(this.articleList)
-      }
+      })
     },
     watch: {
-      articleStatus (val) {
-        this.fetchArticlelist({
-          state: val
-        })
+      articleState (val) {
+        this.fetchArticlelistWrapper()
       }
     },
     created () {
-      this.fetchArticlelist({
-        state: this.status
-      })
+      this.fetchArticlelistWrapper()
     },
     methods: {
       ...mapActions({
         fetchArticlelist: 'article/fetchList',
-        editArticle: 'article/edit'
+        editArticle: 'article/edit',
+        deleteArticle: 'article/delete'
       }),
+      async fetchArticlelistWrapper (config = {}) {
+        const param = {}
+        let state = ~~this.articleState
+        if (state >= 0) {
+          param.state = state
+        }
+        await this.fetchArticlelist(Object.assign({}, param, config))
+      },
       handlePageChange (page) {
-        this.fetchArticlelist({
-          state: this.status,
-          page
-        })
+        this.fetchArticlelist({ page })
       },
       async handleTogglePublish (index, data, state) {
         await this.editArticle({
           id: data._id,
           model: { state: ~~state }
         })
-        await this.fetchArticlelist({
-          state: 1 - ~~state,
+        await this.fetchArticlelistWrapper({
           page: this.pagination.current_page
         })
       },
       handleEdit (index, data) {},
-      handleDelete (index, data) {}
+      async handleDelete (index, data) {
+        await this.deleteArticle(data._id)
+        await this.fetchArticlelistWrapper()
+      },
+      handleSearch () {
+        const param = {}
+        if (this.articleFilter.title) {
+          param.keyword = this.articleFilter.title
+        }
+        this.fetchArticlelistWrapper()
+      }
     }
   }
 </script>
@@ -83,8 +103,4 @@
 <style lang="stylus" scoped>
   @import '~@/assets/stylus/vars/index'
   @import '~@/assets/stylus/mixins/index'
-
-  .blog-articles-page {
-    card()
-  }
 </style>

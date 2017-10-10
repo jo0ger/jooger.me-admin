@@ -18,7 +18,7 @@
         :collapse="asideCollapse"
         active-text-color="#409EFF"
         router>
-        <template v-for="menu in routesMenu">
+        <template v-for="menu in appRoutesMenu">
           <el-submenu
             :key="menu.path"
             :index="menu.path"
@@ -52,15 +52,10 @@
     name: 'Layout-Aside',
     computed: {
       ...mapGetters({
-        appRoutes: 'app/routes',
+        appRoutesMenu: 'app/routesMenu',
         asideCollapse: 'app/asideCollapse',
         authInfo: 'auth/info'
       }),
-      routesMenu () {
-        return this.appRoutes.filter(route => {
-          return !route.meta || !route.meta.hidden
-        })
-      },
       defaultActive () {
         return this.$route.fullPath
       }

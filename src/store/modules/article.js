@@ -11,21 +11,28 @@ import { api } from '@/service'
 const FETCH_LIST_REQUEST = 'FETCH_LIST_REQUEST'
 const FETCH_LIST_SUCCESS = 'FETCH_LIST_SUCCESS'
 const FETCH_LIST_FAILURE = 'FETCH_LIST_FAILURE'
-const FETCH_DETAIL_REQUEST = 'FETCH_DETAIL_REQUEST'
-const FETCH_DETAIL_SUCCESS = 'FETCH_DETAIL_SUCCESS'
-const FETCH_DETAIL_FAILURE = 'FETCH_DETAIL_FAILURE'
-const EDIT_DETAIL_REQUEST = 'EDIT_DETAIL_REQUEST'
-const EDIT_DETAIL_FAILURE = 'EDIT_DETAIL_FAILURE'
-const EDIT_DETAIL_SUCCESS = 'EDIT_DETAIL_SUCCESS'
+const FETCH_ITEM_REQUEST = 'FETCH_ITEM_REQUEST'
+const FETCH_ITEM_SUCCESS = 'FETCH_ITEM_SUCCESS'
+const FETCH_ITEM_FAILURE = 'FETCH_ITEM_FAILURE'
+const EDIT_ITEM_REQUEST = 'EDIT_ITEM_REQUEST'
+const EDIT_ITEM_FAILURE = 'EDIT_ITEM_FAILURE'
+const EDIT_ITEM_SUCCESS = 'EDIT_ITEM_SUCCESS'
 const CLEAR_DETAIL = 'CLEAR_DETAIL'
-const FETCH_LIKES_SUCCESS = 'FETCH_LIKES_SUCCESS'
-const LIKE_REQUEST = 'LIKE_REQUEST'
-const LIKE_SUCCESS = 'LIKE_SUCCESS'
-const LIKE_FAILURE = 'LIKE_FAILURE'
+const LIKE_ITEM_REQUEST = 'LIKE_ITEM_REQUEST'
+const LIKE_ITEM_SUCCESS = 'LIKE_ITEM_SUCCESS'
+const LIKE_ITEM_FAILURE = 'LIKE_ITEM_FAILURE'
+const CREATE_ITEM_REQUEST = 'CREATE_ITEM_REQUEST'
+const CREATE_ITEM_FAILURE = 'CREATE_ITEM_FAILURE'
+const CREATE_ITEM_SUCCESS = 'CREATE_ITEM_SUCCESS'
+const DELETE_ITEM_REQUEST = 'DELETE_ITEM_REQUEST'
+const DELETE_ITEM_FAILURE = 'DELETE_ITEM_FAILURE'
+const DELETE_ITEM_SUCCESS = 'DELETE_ITEM_SUCCESS'
 
 export const state = () => ({
   list: {
     fetching: false,
+    deleting: false,
+    creating: false,
     data: [],
     pagination: {}
   },
@@ -59,9 +66,9 @@ export const mutations = {
     state.list.data = list
     state.list.pagination = pagination
   },
-  [FETCH_DETAIL_REQUEST]: state => (state.detail.fetching = true),
-  [FETCH_DETAIL_FAILURE]: state => (state.detail.fetching = false),
-  [FETCH_DETAIL_SUCCESS]: (state, data) => {
+  [FETCH_ITEM_REQUEST]: state => (state.detail.fetching = true),
+  [FETCH_ITEM_FAILURE]: state => (state.detail.fetching = false),
+  [FETCH_ITEM_SUCCESS]: (state, data) => {
     state.detail.fetching = false
     state.detail.data = data
   },
@@ -72,29 +79,52 @@ export const mutations = {
     state.detail.likes = []
     state.detail.isLiked = false
   },
-  [EDIT_DETAIL_REQUEST]: state => (state.detail.editing = true),
-  [EDIT_DETAIL_FAILURE]: state => (state.detail.editing = false),
-  [EDIT_DETAIL_SUCCESS]: (state, data) => {
+  [EDIT_ITEM_REQUEST]: state => (state.detail.editing = true),
+  [EDIT_ITEM_FAILURE]: state => (state.detail.editing = false),
+  [EDIT_ITEM_SUCCESS]: (state, data) => {
     state.detail.editing = false
-    state.detail.data = data
+    if (state.detail) {
+      state.detail.data = data
+    }
     const index = state.list.data.findIndex(item => item._id === data._id)
     if (index > -1) {
       state.list.data.splice(index, 1, data)
     }
   },
-  [FETCH_LIKES_SUCCESS]: (state, { list, isLiked }) => {
-    state.detail.likes = list
-    state.detail.isLiked = isLiked
-  },
-  [LIKE_REQUEST]: state => (state.detail.liking = true),
-  [LIKE_FAILURE]: state => (state.detail.liking = false),
-  [LIKE_SUCCESS]: (state, data) => {
+  [LIKE_ITEM_REQUEST]: state => (state.detail.liking = true),
+  [LIKE_ITEM_FAILURE]: state => (state.detail.liking = false),
+  [LIKE_ITEM_SUCCESS]: (state, data) => {
     state.detail.liking = false
     if (state.detail.reactions) {
       state.detail.reactions.heart++
     }
     const article = state.list.data.findIndex(item => item.id === state.detail.id)
     article && article.reactions && article.reactions.heart++
+  },
+  [DELETE_ITEM_REQUEST]: state => (state.list.deleting = true),
+  [DELETE_ITEM_FAILURE]: state => (state.list.deleting = false),
+  [DELETE_ITEM_SUCCESS]: (state, id) => {
+    state.list.deleting = false
+    const index = state.list.data.findIndex(item => item._id === id)
+    if (index > -1) {
+      state.list.data.splice(index, 1)
+    }
+    if (state.detail.data && state.detail.data._id === id) {
+      state.detail = {
+        fetching: false,
+        editing: false,
+        liking: false,
+        data: null,
+        likes: [],
+        isLiked: false
+      }
+    }
+  },
+  [CREATE_ITEM_REQUEST]: state => (state.list.creating = true),
+  [CREATE_ITEM_FAILURE]: state => (state.list.creating = false),
+  [CREATE_ITEM_SUCCESS]: (state, data) => {
+    state.list.creating = false
+    state.list.data.unshift(data)
   }
 }
 
@@ -116,12 +146,12 @@ export const actions = {
     if (state.detail.fetching) {
       return
     }
-    commit(FETCH_DETAIL_REQUEST)
-    const { success, data } = await api.article.item(id)().catch(err => commit(FETCH_DETAIL_FAILURE, err))
+    commit(FETCH_ITEM_REQUEST)
+    const { success, data } = await api.article.item(id)().catch(err => commit(FETCH_ITEM_FAILURE, err))
     if (success) {
-      commit(FETCH_DETAIL_SUCCESS, data)
+      commit(FETCH_ITEM_SUCCESS, data)
     } else {
-      commit(FETCH_DETAIL_FAILURE)
+      commit(FETCH_ITEM_FAILURE)
     }
     return success
   },
@@ -129,12 +159,12 @@ export const actions = {
     if (state.detail.editing || !id || model === null) {
       return
     }
-    commit(EDIT_DETAIL_REQUEST)
-    const { success, data } = await api.article.update(id)({ data: { ...model } }).catch(err => commit(EDIT_DETAIL_FAILURE, err))
+    commit(EDIT_ITEM_REQUEST)
+    const { success, data } = await api.article.update(id)({ data: { ...model } }).catch(err => commit(EDIT_ITEM_FAILURE, err))
     if (success) {
-      commit(EDIT_DETAIL_SUCCESS, data)
+      commit(EDIT_ITEM_SUCCESS, data)
     } else {
-      commit(EDIT_DETAIL_FAILURE)
+      commit(EDIT_ITEM_FAILURE)
     }
     return success
   },
@@ -142,13 +172,38 @@ export const actions = {
     if (state.detail.liking) {
       return
     }
-    commit(LIKE_REQUEST)
-    const { success, data } = await api.article.like(id)().catch(err => commit(LIKE_FAILURE, err))
+    commit(LIKE_ITEM_REQUEST)
+    const { success, data } = await api.article.like(id)().catch(err => commit(LIKE_ITEM_FAILURE, err))
     if (success) {
-      commit(LIKE_SUCCESS, data)
+      commit(LIKE_ITEM_SUCCESS, data)
     } else {
-      commit(LIKE_FAILURE)
+      commit(LIKE_ITEM_FAILURE)
     }
     return success
+  },
+  async delete ({ commit, dispatch, state }, id) {
+    if (state.detail.deleting || !id) {
+      return
+    }
+    commit(DELETE_ITEM_REQUEST)
+    const { success } = await api.article.delete(id)().catch(err => commit(DELETE_ITEM_FAILURE, err))
+    if (success) {
+      commit(DELETE_ITEM_SUCCESS, id)
+    } else {
+      commit(DELETE_ITEM_FAILURE)
+    }
+    return success
+  },
+  async create ({ commit, state }, params = {}) {
+    if (state.list.creating) {
+      return
+    }
+    commit(CREATE_ITEM_REQUEST)
+    const { success, data } = await api.article.create({ data: params }).catch(err => commit(CREATE_ITEM_FAILURE, err))
+    if (success) {
+      commit(CREATE_ITEM_SUCCESS, data)
+    } else {
+      commit(CREATE_ITEM_FAILURE)
+    }
   }
 }

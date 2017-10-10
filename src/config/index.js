@@ -27,12 +27,5 @@ export default {
     withCredentials: true,
     timeout: 120000,
     responseType: 'json'
-  },
-  post: {
-    default: {
-      title: '这是一篇新文章',
-      content: '新文章的内容',
-      description: '新文章的简介'
-    }
   }
 }
