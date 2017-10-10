@@ -45,7 +45,6 @@
     },
     methods: {
       handleTriggerAction (key) {
-        console.log(key)
         switch (key) {
           case 'create-article':
             const pageName = this.$route.name

@@ -73,3 +73,31 @@ export const fmtDate = (date, fmt = 'yyyy-MM-dd hh:mm') => {
   }
   return fmt
 }
+
+/**
+ * Deep Copy
+ * @param {Object | Array} out
+ * @return {Object | Array} out
+ * @usage deepCopy({}[, obj, obj2, ...]) | deepCopy([][, arr1, arr2, ...])
+ */
+export const deepCopy = function (out = {}) {
+  for (let i = 1; i < arguments.length; i++) {
+    const obj = arguments[i]
+
+    if (!obj) {
+      continue
+    }
+
+    for (let key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        if (typeof obj[key] === 'object') {
+          out[key] = Array.isArray(obj[key]) ? [] : {}
+          deepCopy(out[key], obj[key])
+        } else {
+          out[key] = obj[key]
+        }
+      }
+    }
+  }
+  return out
+}
