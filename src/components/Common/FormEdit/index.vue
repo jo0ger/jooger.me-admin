@@ -4,8 +4,10 @@
     <transition name="summary" appear>
       <div class="summary" :style="summaryStyle" v-if="canEdit">
         <div class="wrapper">
-          <el-button class="btn cancel-btn" plain type="danger" v-if="showCancel" @click="handleCancel">取消</el-button>
-          <el-button class="btn submit-btn" type="primary" @click="handleSubmit">提交</el-button>
+          <el-button class="btn cancel-btn" :disabled="loading" plain type="danger" v-if="showCancel" @click="handleCancel">取消</el-button>
+          <el-button class="btn submit-btn" :loading="loading" type="primary" @click="handleSubmit">
+            {{ loading ? '提交中...' : '提交' }}
+          </el-button>
         </div>
       </div>
     </transition>
@@ -25,6 +27,10 @@
       canEdit: {
         type: Boolean,
         default: true
+      },
+      loading: {
+        type: Boolean,
+        default: false
       }
     },
     computed: {

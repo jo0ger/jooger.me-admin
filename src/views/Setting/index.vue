@@ -1,6 +1,7 @@
 <template>
   <section class="setting-page">
     <FormEdit
+      :loading="optionEditing"
       :showCancel="false"
       @submit="handleSubmit"
       v-if="model">
@@ -18,15 +19,42 @@
                 <el-input v-model="model.subtitle" placeholder="请输入副标题"></el-input>
               </el-form-item>
               <el-form-item label="轮播图">
-                <el-upload
-                  action="https://jsonplaceholder.typicode.com/posts/"
-                  list-type="picture-card"
-                  :on-preview="handlePictureCardPreview"
-                  :on-remove="handleRemove">
-                  <i class="el-icon-plus"></i>
-                </el-upload>
+                <el-row class="banner-item" v-for="(banner, index) in model.banners" :key="index">
+                  <el-col :span="18">
+                    <el-input v-model="model.banners[index]" placeholder="请输入URL"></el-input>
+                  </el-col>
+                  <el-col :span="2">
+                    <el-button type="danger" size="mini" plain round icon='el-icon-minus' @click="handleDeleteItem('banners', index)"></el-button>
+                  </el-col>
+                  <el-col :span="2">
+                    <el-button type="primary" size="mini" plain round icon='el-icon-search' @click="handlePreview(banner)"></el-button>
+                  </el-col>
+                </el-row>
               </el-form-item>
-              <el-form-item label="错误头图">
+              <el-form-item label="错误图">
+                <el-row>
+                  <el-col :span="20">
+                    <el-input v-model="model.errorBanner" placeholder="请输入URL"></el-input>
+                  </el-col>
+                  <el-col :span="2">
+                    <el-button style="margin-left: 16px" type="primary" size="mini" plain round icon='el-icon-search' @click="handlePreview(model.errorBanner)"></el-button>
+                  </el-col>
+                </el-row>
+              </el-form-item>
+            </el-form>
+          </el-card>
+          <el-card >
+            <div slot="header">
+              <span>第三方设置</span>
+            </div>
+            <el-form ref="form" :model="model" label-width="80px">
+              <el-form-item label="音乐ID">
+                <el-col :span="20">
+                  <el-input v-model="model.musicId" placeholder="请输入音乐ID"></el-input>
+                </el-col>
+                <el-col :span="2">
+                  <el-button style="margin-left: 16px" type="primary" size="mini" plain round icon='el-icon-search' @click="handleViewMusic"></el-button>
+                </el-col>
               </el-form-item>
             </el-form>
           </el-card>
@@ -47,6 +75,11 @@
                   </el-col>
                   <el-col :span="2">
                     <el-button type="danger" size="mini" plain round icon='el-icon-minus' @click="handleDeleteItem('description', index)"></el-button>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="20">
+                    <el-button type="primary" size="small" icon='el-icon-plus' style="width: 100%" @click="handleAddItem('description')">添加</el-button>
                   </el-col>
                 </el-row>
               </el-form-item>
@@ -183,13 +216,92 @@
         </el-col>
       </el-row>
     </FormEdit>
+    <el-dialog
+      title="图片预览"
+      width="60%"
+      center
+      top="5vh"
+      :visible.async="!!previewUrl"
+      @close="handleClosePreview">
+      <img :src="previewUrl" alt="" width="100%">
+    </el-dialog>
+    <el-dialog
+      v-if="model"
+      :title="`歌单预览 - ${model.musicId}`"
+      center
+      width="60%"
+      :visible.async="musicPreview"
+      @close="handleCloseViewMusic">
+      <el-table
+        v-loading="musicFetching"
+        element-loading-text="LOADING"
+        empty-text="未找到该歌单"
+        :data="musicList">
+        <el-table-column
+          prop="name"
+          label="名称">
+          <template scope="scope">
+            <a :href="`https://music.163.com/#/song?id=${scope.row.id}`" target="_blank" :key="scope.row.id">
+              {{ scope.row.name }}
+            </a>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="artists"
+          label="歌手"
+          width="100">
+          <template scope="scope">
+            <template v-for="(at, index) in scope.row.artists">
+              <span :key="at.id" v-if="index !== 0"> / </span>
+              <a :href="`https://music.163.com/#/artist?id=${at.id}`" target="_blank" :key="at.id">
+                {{ at.name }}
+              </a>
+            </template>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="album"
+          label="专辑">
+          <template scope="scope">
+            <a :href="`https://music.163.com/#/album?id=${scope.row.album.id}`" target="_blank">
+              <span>{{ scope.row.album.name }}</span>
+              <span class="alias" v-if="scope.row.album.tns && scope.row.album.tns.length">
+                <span> ( </span>
+                <span class="alias-name" v-for="(alias, index) in scope.row.album.tns" :key="index">
+                  {{ alias }}
+                </span>
+                <span> ) </span>
+              </span>
+            </a>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="duration"
+          label="时长"
+          width="80">
+          <template scope="scope">
+            <i class="el-icon-time"></i>
+            <span>{{ getMusicDuration(scope.row.duration) }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="lyric"
+          label="歌词"
+          width="50">
+          <template scope="scope">
+            <span>{{ !!scope.row.lyric ? '有' : '无' }}</span>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-dialog>
   </section>
 </template>
 
 <script>
   import { mapGetters, mapActions } from 'vuex'
   import { FormEdit } from '@/components/Common'
-  import { deepCopy } from '@/utils'
+  import { deepCopy, isType } from '@/utils'
+  import { api } from '@/service'
   import defaultAvatar from '@@/static/image/avatar.png'
 
   export default {
@@ -200,12 +312,17 @@
     data () {
       return {
         defaultAvatar,
-        model: null
+        model: null,
+        previewUrl: '',
+        musicPreview: false,
+        musicList: [],
+        musicFetching: false
       }
     },
     computed: {
       ...mapGetters({
-        option: 'option/option'
+        option: 'option/option',
+        optionEditing: 'option/editing'
       })
     },
     async created () {
@@ -217,6 +334,14 @@
         fetchOption: 'option/fetch',
         updateOption: 'option/update'
       }),
+      formatTime (secs = 0) {
+        const minutes = Math.floor(secs / 60) || 0
+        const seconds = (secs - minutes * 60) || 0
+        return minutes + ':' + (seconds < 10 ? '0' : '') + seconds
+      },
+      getMusicDuration (d = 0) {
+        return this.formatTime(Math.floor(d / 1000))
+      },
       handleRemove (file, fileList) {
         console.log(file, fileList)
       },
@@ -232,6 +357,9 @@
       },
       handleAddItem (key) {
         switch (key) {
+          case 'description':
+            this.model[key].push('')
+            break
           case 'hobby':
             this.model[key].push({ name: '', icon: '' })
             break
@@ -251,7 +379,45 @@
             break
         }
       },
-      handleSubmit () {}
+      handlePreview (url) {
+        this.previewUrl = url
+      },
+      handleClosePreview () {
+        this.previewUrl = ''
+      },
+      async handleViewMusic () {
+        this.musicPreview = true
+        this.musicFetching = true
+        const { success, data } = await api.music.list({
+          params: {
+            play_list_id: this.model.musicId
+          }
+        })
+        this.musicFetching = false
+        if (success) {
+          this.musicList = data
+        }
+      },
+      handleCloseViewMusic () {
+        this.musicPreview = false
+        this.musicList = []
+      },
+      handleSubmit () {
+        // 提交前的校验，去除数组中的空项（全部值都是空的项）
+        const model = deepCopy(this.model)
+        for (let key in model) {
+          if (isType(model[key], 'Array')) {
+            model[key] = model[key].filter(item => {
+              if (isType(item, 'String')) {
+                return !!item
+              } else if (isType(item, 'Object')) {
+                return !Object.keys(item).every(k => !item[k])
+              }
+            })
+          }
+        }
+        this.updateOption(model)
+      }
     }
   }
 </script>
@@ -263,6 +429,7 @@
   .setting-page {
     padding-bottom 100px
 
+    .banner-item
     .desc-item
     .hobby-item
     .experience-item
