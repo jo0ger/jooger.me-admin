@@ -1,6 +1,6 @@
 # jooger.me-admin
 
-> A Vue.js project
+> Admin site form my personal website
 
 ## Build Setup
 
