@@ -12,6 +12,7 @@ import PageNotFound from '@/views/Error/404'
 
 const Blog = () => import(/* webpackChunkName: "Blog" */ '@/views/Blog')
 const BlogArticles = () => import(/* webpackChunkName: "BlogArticles" */ '@/views/Blog/Articles')
+const BlogArticleDetail = () => import(/* webpackChunkName: "BlogArticleDetail" */ '@/views/Blog/ArticleDetail')
 const BlogTags = () => import(/* webpackChunkName: "BlogTags" */ '@/views/Blog/Tags')
 const Setting = () => import(/* webpackChunkName: "Setting" */ '@/views/Setting')
 const Message = () => import(/* webpackChunkName: "Message" */ '@/views/Message')
@@ -76,6 +77,19 @@ export default [
         }
       },
       {
+        path: 'articles/:articleId',
+        name: 'Blog-ArticleDetail',
+        component: BlogArticleDetail,
+        meta: {
+          title: '文章详情',
+          icon: 'article-detail',
+          hidden: true,
+          action: {
+            create: true
+          }
+        }
+      },
+      {
         path: 'tag',
         name: 'Blog-Tags',
         component: BlogTags,
@@ -114,7 +128,7 @@ export default [
     component: Auth,
     meta: {
       title: '个人信息',
-      icon: 'auth',
+      icon: 'user-info',
       hidden: true
     }
   }

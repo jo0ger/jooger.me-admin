@@ -21,7 +21,7 @@ export const state = {
 
 export const getters = {
   routes: state => state.routes,
-  routesMenu: state => state.routes.filter(route => !route.meta || !route.meta.hidden),
+  routesMenu: state => getMenu(state.routes),
   asideCollapse: state => state.asideCollapse,
   actionButtonVisible: state => state.actionButtonVisible
 }
@@ -40,4 +40,17 @@ export const mutations = {
       }
     }
   }
+}
+
+function getMenu (routes = []) {
+  return routes.map(route => {
+    route = Object.assign({}, route)
+    if (!route.meta || !route.meta.hidden) {
+      if (route.children) {
+        route.children = getMenu(route.children)
+      }
+      return route
+    }
+    return null
+  }).filter(route => !!route)
 }

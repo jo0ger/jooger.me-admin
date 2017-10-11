@@ -84,17 +84,27 @@
           page: this.pagination.current_page
         })
       },
-      handleEdit (index, data) {},
+      handleEdit (index, data) {
+        if (!data._id) {
+          return this.$message.error('文章ID不能为空')
+        }
+        this.$router.push({
+          name: 'Blog-ArticleDetail',
+          params: {
+            articleId: data._id
+          }
+        })
+      },
       async handleDelete (index, data) {
         await this.deleteArticle(data._id)
         await this.fetchArticlelistWrapper()
       },
       handleSearch () {
-        const param = {}
+        const params = {}
         if (this.articleFilter.title) {
-          param.keyword = this.articleFilter.title
+          params.keyword = this.articleFilter.title
         }
-        this.fetchArticlelistWrapper()
+        this.fetchArticlelistWrapper(params)
       }
     }
   }

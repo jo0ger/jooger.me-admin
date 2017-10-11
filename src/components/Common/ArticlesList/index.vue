@@ -13,7 +13,7 @@
       <el-table-column
         prop="title"
         label="标题"
-        width="270">
+        width="250">
         <template scope="scope">
           <p class="title">{{ scope.row.title }}</p>
         </template>
@@ -24,7 +24,7 @@
         width="180">
         <template scope="scope">
           <template v-if="scope.row.tag && scope.row.tag.length">
-            <a v-for="item in scope.row.tag" :key="item._id">
+            <a class="tag-item" v-for="item in scope.row.tag" :key="item._id">
               <el-tag size="small">
                 {{ item.name }}
               </el-tag>
@@ -48,21 +48,24 @@
       </el-table-column>
       <el-table-column
         prop="meta"
-        label="浏览量">
+        label="浏览量"
+        width="70">
         <template scope="scope">
           <span>{{ scope.row.meta.pvs }}</span>
         </template>
       </el-table-column>
       <el-table-column
         prop="meta"
-        label="点赞数">
+        label="点赞数"
+        width="70">
         <template scope="scope">
           <span>{{ scope.row.meta.ups }}</span>
         </template>
       </el-table-column>
       <el-table-column
         prop="meta"
-        label="评论量">
+        label="评论量"
+        width="70">
         <template scope="scope">
           <span>{{ scope.row.meta.comments }}</span>
         </template>
@@ -101,14 +104,14 @@
           <el-button
             class="edit-btn"
             type="text"
-            icon="el-icon-edit"
             @click="handleEdit(scope.$index, scope.row)">
+            <i class="iconfont icon-edit"></i>
           </el-button>
           <el-button
             class="delete-btn"
             type="text"
-            icon="el-icon-delete2"
-            @click="handleDelete(scope.$index, scope.row)">
+            @click="handleOpenDeletePopover(scope.$index, scope.row)">
+            <i class="iconfont icon-delete"></i>
           </el-button>
         </template>
       </el-table-column>
@@ -155,8 +158,15 @@
       handleEdit (index, data) {
         this.$emit('edit', index, data)
       },
-      handleDelete (index, data) {
-        this.$emit('delete', index, data)
+      handleOpenDeletePopover (index, data) {
+        // const h = this.$createElement
+        this.$confirm('<strong>此操作将永久删除该篇文章, 是否继续?</strong>', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          dangerouslyUseHTMLString: true,
+          type: 'warning',
+          center: true
+        }).then(() => this.$emit('delete', index, data))
       }
     }
   }
@@ -176,6 +186,9 @@
     .keyword {
       display inline-block
       margin-right 10px
+    }
+    .tag-item + .tag-item {
+      margin-left 8px
     }
     .state {
       flexLayout(, flex-start)
@@ -213,13 +226,13 @@
 
       &.un-published {
         i {
-          background-color alpha($yellow, .4)
+          background-color alpha($grey, .4)
           &::after {
-            background-color $yellow
+            background-color $grey
           }
         }
         .text {
-          color $yellow
+          color $grey
         }
       }
 
