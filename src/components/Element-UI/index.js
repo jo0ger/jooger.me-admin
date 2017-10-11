@@ -16,6 +16,7 @@ import {
   Main,
   Footer,
   Message,
+  MessageBox,
   Button,
   ButtonGroup,
   Menu,
@@ -38,10 +39,18 @@ import {
   Badge,
   Select,
   Option,
-  Dialog
+  Dialog,
+  Autocomplete,
+  Switch
 } from 'element-ui'
 
-Vue.use(Loading.directive)
+Vue.use(Loading)
+
+Vue.prototype.$message = Message
+Vue.prototype.$msgbox = MessageBox
+Vue.prototype.$alert = MessageBox.alert
+Vue.prototype.$confirm = MessageBox.confirm
+Vue.prototype.$prompt = MessageBox.prompt
 
 Vue.component(Row.name, Row)
 Vue.component(Col.name, Col)
@@ -50,7 +59,6 @@ Vue.component(Header.name, Header)
 Vue.component(Aside.name, Aside)
 Vue.component(Main.name, Main)
 Vue.component(Footer.name, Footer)
-Vue.component(Message.name, Message)
 Vue.component(Button.name, Button)
 Vue.component(ButtonGroup.name, ButtonGroup)
 Vue.component(Menu.name, Menu)
@@ -73,3 +81,5 @@ Vue.component(Badge.name, Badge)
 Vue.component(Select.name, Select)
 Vue.component(Option.name, Option)
 Vue.component(Dialog.name, Dialog)
+Vue.component(Autocomplete.name, Autocomplete)
+Vue.component(Switch.name, Switch)

@@ -23,11 +23,15 @@
                   <el-col :span="18">
                     <el-input v-model="model.banners[index]" placeholder="请输入URL"></el-input>
                   </el-col>
-                  <el-col :span="2">
-                    <el-button type="danger" size="mini" plain round icon='el-icon-minus' @click="handleDeleteItem('banners', index)"></el-button>
-                  </el-col>
-                  <el-col :span="2">
-                    <el-button type="primary" size="mini" plain round icon='el-icon-search' @click="handlePreview(banner)"></el-button>
+                  <el-col :span="4">
+                    <el-row :gutter="16">
+                      <el-col :span="12">
+                        <el-button type="danger" size="mini" plain round icon='el-icon-minus' @click="handleDeleteItem('banners', index)"></el-button>
+                      </el-col>
+                      <el-col :span="12">
+                        <el-button type="primary" size="mini" plain round icon='el-icon-search' @click="handlePreview(banner)"></el-button>
+                      </el-col>
+                    </el-row>
                   </el-col>
                 </el-row>
               </el-form-item>
@@ -49,12 +53,14 @@
             </div>
             <el-form ref="form" :model="model" label-width="80px">
               <el-form-item label="音乐ID">
-                <el-col :span="20">
-                  <el-input v-model="model.musicId" placeholder="请输入音乐ID"></el-input>
-                </el-col>
-                <el-col :span="2">
-                  <el-button style="margin-left: 16px" type="primary" size="mini" plain round icon='el-icon-search' @click="handleViewMusic"></el-button>
-                </el-col>
+                <el-row>
+                  <el-col :span="20">
+                    <el-input v-model="model.musicId" placeholder="请输入音乐ID"></el-input>
+                  </el-col>
+                  <el-col :span="2">
+                    <el-button style="margin-left: 16px" type="primary" size="mini" plain round icon='el-icon-search' @click="handleViewMusic"></el-button>
+                  </el-col>
+                </el-row>
               </el-form-item>
             </el-form>
           </el-card>
@@ -223,6 +229,7 @@
       top="5vh"
       :visible.async="!!previewUrl"
       @close="handleClosePreview">
+      <p style="margin-bottom: 16px">{{ previewUrl }}</p>
       <img :src="previewUrl" alt="" width="100%">
     </el-dialog>
     <el-dialog
@@ -404,7 +411,7 @@
       },
       handleSubmit () {
         // 提交前的校验，去除数组中的空项（全部值都是空的项）
-        const model = deepCopy(this.model)
+        const model = deepCopy({}, this.model)
         for (let key in model) {
           if (isType(model[key], 'Array')) {
             model[key] = model[key].filter(item => {

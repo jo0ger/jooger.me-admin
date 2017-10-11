@@ -65,6 +65,7 @@
   @import '~@/assets/stylus/mixins/index'
 
   .aside {
+    flexLayout(column, flex-start, flex-start)
     background-color $white
     box-shadow 4px 4px 20px 0 alpha($black, .01)
     overflow visible
@@ -72,6 +73,7 @@
 
     .admin-field {
       position relative
+      width 100%
       padding 24px 12px
       text-align center
       overflow hidden
@@ -80,6 +82,7 @@
         img {
           width 64px
           border-radius 50%
+          transition all .5s $fuck
         }
       }
 
@@ -112,6 +115,8 @@
     // }
 
     .menu-field {
+      flex 1 0
+      width 100%
       .menu-list {
         letter-spacing .5px
         border none
@@ -125,10 +130,6 @@
 
     &.collapse {
       width 64px
-
-      // .logo-field {
-      //   margin 4px 0
-      // }
 
       .admin-field {
         padding 8px

@@ -4,7 +4,7 @@
     <transition name="summary" appear>
       <div class="summary" :style="summaryStyle" v-if="canEdit">
         <div class="wrapper">
-          <el-button class="btn cancel-btn" :disabled="loading" plain type="danger" v-if="showCancel" @click="handleCancel">取消</el-button>
+          <el-button class="btn cancel-btn" :disabled="loading" plain v-if="showCancel" @click="handleCancel">取消</el-button>
           <el-button class="btn submit-btn" :loading="loading" type="primary" @click="handleSubmit">
             {{ loading ? '提交中...' : '提交' }}
           </el-button>
