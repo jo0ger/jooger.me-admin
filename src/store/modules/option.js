@@ -23,7 +23,8 @@ export const state = {
 
 export const getters = {
   option: state => state.data,
-  fetching: state => state.fetching
+  fetching: state => state.fetching,
+  editing: state => state.editing
 }
 
 export const mutations = {

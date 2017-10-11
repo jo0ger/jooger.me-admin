@@ -101,5 +101,8 @@ export default {
     item: id => wrap(`/users/${id}`),
     update: id => wrap(`/users/${id}`, 'patch'),
     delete: id => wrap(`/users/${id}`, 'delete')
+  },
+  music: {
+    list: wrap('/music/songs')
   }
 }
