@@ -46,10 +46,10 @@
     methods: {
       handleTriggerAction (key) {
         switch (key) {
-          case 'create-article':
+          case 'create':
             const pageName = this.$route.name
-            if (pageName === 'Blog-Articles') {
-              // TODO: go to create article page
+            if (pageName.includes('Article')) {
+              this.$router.push({ name: 'Blog-ArticleCreate' })
             }
             break
           case 'go-to-top':
@@ -70,7 +70,7 @@
   .action-buttons {
     .list {
       position fixed
-      right 10px
+      right 30px
       bottom 70px
       z-index 999
 

@@ -13,6 +13,7 @@ import PageNotFound from '@/views/Error/404'
 const Blog = () => import(/* webpackChunkName: "Blog" */ '@/views/Blog')
 const BlogArticles = () => import(/* webpackChunkName: "BlogArticles" */ '@/views/Blog/Articles')
 const BlogArticleDetail = () => import(/* webpackChunkName: "BlogArticleDetail" */ '@/views/Blog/ArticleDetail')
+const BlogArticleCreate = () => import(/* webpackChunkName: "BlogArticleCreate" */ '@/views/Blog/ArticleCreate')
 const BlogTags = () => import(/* webpackChunkName: "BlogTags" */ '@/views/Blog/Tags')
 const Setting = () => import(/* webpackChunkName: "Setting" */ '@/views/Setting')
 const Message = () => import(/* webpackChunkName: "Message" */ '@/views/Message')
@@ -87,6 +88,16 @@ export default [
           action: {
             create: true
           }
+        }
+      },
+      {
+        path: 'articles/create',
+        name: 'Blog-ArticleCreate',
+        component: BlogArticleCreate,
+        meta: {
+          title: '新建文章',
+          icon: 'article-create',
+          hidden: true
         }
       },
       {

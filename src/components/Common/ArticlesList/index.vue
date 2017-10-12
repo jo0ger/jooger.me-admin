@@ -76,7 +76,7 @@
         width="180">
         <template scope="scope">
           <i class="el-icon-time"></i>
-          <span>{{ scope.row.createdAt | fmtDate('yyyy-MM-dd hh:mm') }}</span>
+          <span>{{ scope.row.createdAt | fmtDate('yyyy-MM-dd hh:mm:ss') }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -96,19 +96,20 @@
       <el-table-column label="操作">
         <template scope="scope">
           <el-button
+            class="operate"
             :class="[scope.row.state == 1 ? 'unpublish-btn' : 'publish-btn']"
             type="text"
             @click="handleTogglePublish(scope.$index, scope.row, !~~scope.row.state)">
             <i class="iconfont" :class="[`icon-${scope.row.state == 1 ? 'unpublish' : 'publish'}`]"></i>
           </el-button>
           <el-button
-            class="edit-btn"
+            class="operate edit-btn"
             type="text"
             @click="handleEdit(scope.$index, scope.row)">
             <i class="iconfont icon-edit"></i>
           </el-button>
           <el-button
-            class="delete-btn"
+            class="operate delete-btn"
             type="text"
             @click="handleOpenDeletePopover(scope.$index, scope.row)">
             <i class="iconfont icon-delete"></i>
@@ -241,6 +242,18 @@
         margin-left 5px
       }
     }
+
+    .operate {
+      opacity 1
+      transform scale(1)
+      transition all .3s $ease
+
+      &:hover {
+        opacity .6
+        transform scale(.9)
+      }
+    }
+
     .publish-btn {
       color $green
     }
