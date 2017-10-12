@@ -74,6 +74,7 @@
     background-color $white
     box-shadow 4px 4px 40px 0 alpha($black, .05)
     border-bottom 1px solid $border-color-4
+    z-index 9999
 
     .collapse {
       display inline-block

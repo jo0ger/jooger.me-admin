@@ -2,6 +2,7 @@
   <section class="blog-article-detail-page">
     <FormEdit
       :loading="articleDetailEditing"
+      cancel-text="返回"
       @submit="handleSubmit"
       @cancel="handleBack"
       v-if="model">
@@ -91,6 +92,35 @@
             <div slot="header">
               <span>其他信息</span>
             </div>
+            <el-form ref="form" :model="model" label-width="80px">
+              <el-form-item label="创建时间">
+                <el-date-picker
+                  v-model="createdAt"
+                  type="datetime"
+                  placeholder="选择创建日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item label="更新时间">
+                <i class="el-icon-time"></i>
+                <span>{{ model.updatedAt | fmtDate('yyyy-MM-dd hh:mm:ss') }}</span>
+              </el-form-item>
+              <el-form-item label="发布时间">
+                <i class="el-icon-time"></i>
+                <span>{{ model.publishedAt | fmtDate('yyyy-MM-dd hh:mm:ss') }}</span>
+              </el-form-item>
+              <el-form-item label="浏览量">
+                <i class="iconfont icon-visit"></i>
+                <span style="margin-left: 8px">{{ model.meta.pvs }}</span>
+              </el-form-item>
+              <el-form-item label="点赞量">
+                <i class="iconfont icon-thumb-up"></i>
+                <span style="margin-left: 8px">{{ model.meta.ups }}</span>
+              </el-form-item>
+              <el-form-item label="评论量">
+                <i class="iconfont icon-comments"></i>
+                <span style="margin-left: 8px">{{ model.meta.comments }}</span>
+              </el-form-item>
+            </el-form>
           </el-card>
         </el-col>
       </el-row>
@@ -130,7 +160,8 @@
         tagInput: '',
         keywordInputVisible: false,
         keywordInput: '',
-        thumbPreview: false
+        thumbPreview: false,
+        createdAt: ''
       }
     },
     computed: {
@@ -145,6 +176,7 @@
     async created () {
       await this.fetchArticleDetail(this.$route.params.articleId)
       this.model = deepCopy({}, this.articleDetail)
+      this.createdAt = this.model.createdAt
     },
     beforeDestroy () {
       this.$store.commit('article/CLEAR_DETAIL')
@@ -209,6 +241,13 @@
       handleSubmit () {
         const model = deepCopy({}, this.model)
         model.tag = model.tag.map(item => item._id)
+        console.log(new Date(this.createdAt).getTime() !== new Date(this.model.createdAt).getTime())
+        if (this.createdAt && new Date(this.createdAt).getTime() !== new Date(this.model.createdAt).getTime()) {
+          model.createdAt = this.createdAt
+        } else {
+          this.createdAt = this.model.createdAt
+          delete model.createdAt
+        }
         this.editArticle({
           id: this.articleDetail._id,
           model

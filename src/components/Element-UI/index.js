@@ -41,7 +41,8 @@ import {
   Option,
   Dialog,
   Autocomplete,
-  Switch
+  Switch,
+  DatePicker
 } from 'element-ui'
 
 Vue.use(Loading)
@@ -83,3 +84,4 @@ Vue.component(Option.name, Option)
 Vue.component(Dialog.name, Dialog)
 Vue.component(Autocomplete.name, Autocomplete)
 Vue.component(Switch.name, Switch)
+Vue.component(DatePicker.name, DatePicker)
