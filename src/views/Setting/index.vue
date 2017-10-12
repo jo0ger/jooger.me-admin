@@ -34,6 +34,11 @@
                     </el-row>
                   </el-col>
                 </el-row>
+                <el-row>
+                  <el-col :span="20">
+                    <el-button type="primary" size="small" icon='el-icon-plus' style="width: 100%" @click="handleAddItem('banners')">添加</el-button>
+                  </el-col>
+                </el-row>
               </el-form-item>
               <el-form-item label="错误图">
                 <el-row>
@@ -364,6 +369,7 @@
       },
       handleAddItem (key) {
         switch (key) {
+          case 'banners':
           case 'description':
             this.model[key].push('')
             break
@@ -423,7 +429,11 @@
             })
           }
         }
-        this.updateOption(model)
+        this.updateOption(model).then(success => {
+          if (success) {
+            this.model = deepCopy({}, this.option)
+          }
+        })
       }
     }
   }
