@@ -86,7 +86,8 @@ export default [
           icon: 'article-detail',
           hidden: true,
           action: {
-            create: true
+            create: true,
+            comment: true
           }
         }
       },

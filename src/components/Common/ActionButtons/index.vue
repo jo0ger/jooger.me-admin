@@ -6,7 +6,10 @@
         class="action" :class="[action.key]"
         :title="action.title"
         @click.prevent.stop="handleTriggerAction(action.key)">
-        <i class="iconfont" :class="['icon-' + action.icon]"></i>
+        <el-badge style="width: 100%" v-if="action.key === 'comment'" :value="articleDetail ? articleDetail.meta.comments : 0" :max="999">
+          <i class="iconfont" :class="['icon-' + action.icon]"></i>
+        </el-badge>
+        <i class="iconfont" :class="['icon-' + action.icon]" v-else></i>
       </a>
     </transition-group>
   </div>
@@ -20,6 +23,7 @@
     name: 'ActionButtons',
     data () {
       const actionMap = [
+        { key: 'comment', title: '评论', icon: 'comments' },
         { key: 'create', title: '新建', icon: 'plus' },
         { key: 'go-to-top', title: '返回顶部', icon: 'go-to-top' }
       ]
@@ -29,14 +33,17 @@
     },
     computed: {
       ...mapGetters({
-        actionButtonVisible: 'app/actionButtonVisible'
+        actionButtonVisible: 'app/actionButtonVisible',
+        articleDetail: 'article/detail'
       }),
       activeActionMap () {
-        const { goToTop, create } = this.actionButtonVisible
+        const { goToTop, create, comment } = this.actionButtonVisible
         return this.actionMap.filter(item => {
           if (item.key === 'go-to-top' && !goToTop) {
             return false
           } else if (item.key === 'create' && !create) {
+            return false
+          } else if (item.key === 'comment' && !comment) {
             return false
           }
           return true
@@ -51,6 +58,10 @@
             if (pageName.includes('Article')) {
               this.$router.push({ name: 'Blog-ArticleCreate' })
             }
+            break
+          case 'comment':
+            // TODO: show comment pane
+            this.$message('show comment pane')
             break
           case 'go-to-top':
             scrollTo(0, 500, { easing: easing['fuck'] })
@@ -95,13 +106,19 @@
 
         &:hover {
           opacity 1
-          transform translate3d(0, 0, 0) scale(.9)
+          transform scale(.9)
         }
 
         &.create {
           color $white
           background-color $base-color
           box-shadow 4px 4px 20px 0 alpha($base-color, .8)
+        }
+
+        &.comment {
+          color $white
+          background-color $grey
+          box-shadow 4px 4px 20px 0 alpha($grey, .8)
         }
       }
     }

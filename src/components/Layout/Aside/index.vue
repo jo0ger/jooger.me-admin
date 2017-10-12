@@ -69,7 +69,7 @@
     background-color $white
     box-shadow 4px 4px 20px 0 alpha($black, .01)
     overflow visible
-    z-index 9999
+    z-index 999
     transition width .5s $fuck
 
     .admin-field {
