@@ -13,11 +13,6 @@
       <el-table-column
         prop="title"
         label="标题">
-        <template scope="scope">
-          <p class="title">
-            {{ scope.row.title }}
-          </p>
-        </template>
       </el-table-column>
       <el-table-column
         prop="tag"
@@ -113,7 +108,7 @@
           <el-button
             class="operate delete-btn"
             type="text"
-            @click="handleOpenDeletePopover(scope.$index, scope.row)">
+            @click="handleOpenDeleteBox(scope.$index, scope.row)">
             <i class="iconfont icon-delete"></i>
           </el-button>
           <el-button
@@ -122,7 +117,7 @@
             @click="handleViewQrcode(scope.$index, scope.row)">
             <i class="iconfont icon-qrcode"></i>
           </el-button>
-          <a :href="getArticleLink(scope.row)" target="_blank" class="skip-link">
+          <a :href="getArticleLink(scope.row)" target="_blank" class="operate skip-btn">
             <i class="iconfont icon-skip-link"></i>
           </a>
         </template>
@@ -185,8 +180,7 @@
       handleEdit (index, data) {
         this.$emit('edit', index, data)
       },
-      handleOpenDeletePopover (index, data) {
-        // const h = this.$createElement
+      handleOpenDeleteBox (index, data) {
         this.$confirm('<strong>此操作将永久删除该篇文章, 是否继续?</strong>', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -215,12 +209,8 @@
   @import '~@/assets/stylus/mixins/index'
 
   .articles-table {
-    color $text-color-secondary
     font-size $font-size-base
 
-    .title {
-      color $text-color
-    }
     .skip-link {
       margin-left 8px
       color $text-color-secondary
@@ -294,7 +284,7 @@
       transition all .3s $ease
 
       &:hover {
-        opacity .6
+        opacity .8
         transform scale(.9)
       }
     }
@@ -311,7 +301,9 @@
     .delete-btn {
       color $red
     }
-    .qrcode-btn {
+    .qrcode-btn
+    .skip-btn {
+      display inline-block
       color alpha($grey, .8)
     }
   }
