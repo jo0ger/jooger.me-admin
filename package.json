@@ -10,6 +10,10 @@
     "build": "node build/build.js",
     "lint": "eslint --ext .js,.vue src"
   },
+  "repository": {
+    "type": "https",
+    "url": "https://github.com/jo0ger/jooger.me-admin.git"
+  },
   "dependencies": {
     "axios": "^0.16.2",
     "bezier-easing": "^2.0.3",
