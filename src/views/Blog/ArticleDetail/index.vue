@@ -13,6 +13,9 @@
               <span>基本信息</span>
             </div>
             <el-form ref="form" :model="model" label-width="80px">
+              <el-form-item label="ID">
+                <span>{{ model._id }}</span>
+              </el-form-item>
               <el-form-item label="状态">
                 <el-switch
                   v-model="model.state"
@@ -84,6 +87,9 @@
                   </el-col>
                 </el-row>
               </el-form-item>
+              <el-form-item label="永久链接">
+                <el-input v-model="model.permalink" placeholder="请输入永久链接URL"></el-input>
+              </el-form-item>
             </el-form>
           </el-card>
         </el-col>
@@ -102,11 +108,11 @@
               </el-form-item>
               <el-form-item label="更新时间">
                 <i class="el-icon-time"></i>
-                <span>{{ model.updatedAt | fmtDate('yyyy-MM-dd hh:mm:ss') }}</span>
+                <span style="margin-left: 8px">{{ model.updatedAt | fmtDate('yyyy-MM-dd hh:mm:ss') }}</span>
               </el-form-item>
               <el-form-item label="发布时间">
                 <i class="el-icon-time"></i>
-                <span>{{ model.publishedAt | fmtDate('yyyy-MM-dd hh:mm:ss') }}</span>
+                <span style="margin-left: 8px">{{ model.publishedAt | fmtDate('yyyy-MM-dd hh:mm:ss') }}</span>
               </el-form-item>
               <el-form-item label="浏览量">
                 <i class="iconfont icon-visit"></i>
@@ -124,11 +130,10 @@
           </el-card>
         </el-col>
       </el-row>
-      <el-card>
-        <div slot="header">
-          <span>内容区域</span>
-        </div>
-      </el-card>
+      <MarkdownEditor
+        :value="model.content"
+        @change="handleEditorValueChange">
+      </MarkdownEditor>
     </FormEdit>
     <el-dialog
       title="缩略图预览"
@@ -145,13 +150,14 @@
 
 <script>
   import { mapGetters, mapActions } from 'vuex'
-  import { FormEdit } from '@/components/Common'
+  import { FormEdit, MarkdownEditor } from '@/components/Common'
   import { deepCopy } from '@/utils'
 
   export default {
     name: 'Blog-ArticleDetail',
     components: {
-      FormEdit
+      FormEdit,
+      MarkdownEditor
     },
     data () {
       return {
@@ -235,13 +241,15 @@
       handleClosePreviewThumb () {
         this.thumbPreview = false
       },
+      handleEditorValueChange (value) {
+        this.model.content = value
+      },
       handleBack () {
         this.$router.back()
       },
       handleSubmit () {
         const model = deepCopy({}, this.model)
         model.tag = model.tag.map(item => item._id)
-        console.log(new Date(this.createdAt).getTime() !== new Date(this.model.createdAt).getTime())
         if (this.createdAt && new Date(this.createdAt).getTime() !== new Date(this.model.createdAt).getTime()) {
           model.createdAt = this.createdAt
         } else {
@@ -262,5 +270,7 @@
 </script>
 
 <style lang="stylus" scoped>
-
+  .blog-article-detail-page {
+    padding-bottom 100px
+  }
 </style>

@@ -12,10 +12,11 @@
       </el-table-column>
       <el-table-column
         prop="title"
-        label="标题"
-        width="250">
+        label="标题">
         <template scope="scope">
-          <p class="title">{{ scope.row.title }}</p>
+          <p class="title">
+            {{ scope.row.title }}
+          </p>
         </template>
       </el-table-column>
       <el-table-column
@@ -81,7 +82,8 @@
       </el-table-column>
       <el-table-column
         prop="state"
-        label="状态">
+        label="状态"
+        width="80px">
         <template scope="scope">
           <div class="state published" v-if="scope.row.state === 1">
             <i class="indicator"></i>
@@ -114,6 +116,15 @@
             @click="handleOpenDeletePopover(scope.$index, scope.row)">
             <i class="iconfont icon-delete"></i>
           </el-button>
+          <el-button
+            class="operate qrcode-btn"
+            type="text"
+            @click="handleViewQrcode(scope.$index, scope.row)">
+            <i class="iconfont icon-qrcode"></i>
+          </el-button>
+          <a :href="getArticleLink(scope.row)" target="_blank" class="skip-link">
+            <i class="iconfont icon-skip-link"></i>
+          </a>
         </template>
       </el-table-column>
     </el-table>
@@ -125,10 +136,20 @@
       layout="total, prev, pager, next, jumper"
       :total="pagination.total">
     </el-pagination>
+    <el-dialog
+      title="文章二维码"
+      width="400px"
+      center
+      :visible.async="!!qrcodeUrl"
+      @close="handleCloseQrcodeThumb">
+      <img :src="qrcodeUrl" alt="" width="100%">
+    </el-dialog>
   </div>
 </template>
 
 <script>
+  import { qrcode } from '@/utils'
+
   export default {
     name: 'ArticlesList',
     props: {
@@ -147,6 +168,11 @@
         default () {
           return {}
         }
+      }
+    },
+    data () {
+      return {
+        qrcodeUrl: ''
       }
     },
     methods: {
@@ -168,6 +194,17 @@
           type: 'warning',
           center: true
         }).then(() => this.$emit('delete', index, data))
+      },
+      getArticleLink (data) {
+        return data.permalink || `https://jooger.me/blog/article/${data._id}`
+      },
+      handleViewQrcode (index, data) {
+        qrcode.toDataURL(this.getArticleLink(data)).then(data => {
+          this.qrcodeUrl = data
+        })
+      },
+      handleCloseQrcodeThumb () {
+        this.qrcodeUrl = ''
       }
     }
   }
@@ -183,6 +220,14 @@
 
     .title {
       color $text-color
+    }
+    .skip-link {
+      margin-left 8px
+      color $text-color-secondary
+
+      &:hover {
+        color $base-color
+      }
     }
     .keyword {
       display inline-block
@@ -261,10 +306,13 @@
       color $yellow
     }
     .edit-btn {
-      color alpha($grey, .8)
+      color $blue
     }
     .delete-btn {
       color $red
+    }
+    .qrcode-btn {
+      color alpha($grey, .8)
     }
   }
 

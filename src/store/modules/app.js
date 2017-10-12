@@ -15,7 +15,8 @@ export const state = {
   asideCollapse: false,
   actionButtonVisible: {
     goToTop: false,
-    create: false
+    create: false,
+    comment: false
   }
 }
 
