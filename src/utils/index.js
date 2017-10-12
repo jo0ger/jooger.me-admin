@@ -12,6 +12,7 @@ export * from './tool'
 export * from './storage'
 export * from './scrollTo'
 export * from './marked'
+export * from './imageLoad'
 export {
   qrcode
 }

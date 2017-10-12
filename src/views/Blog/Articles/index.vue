@@ -85,9 +85,6 @@
         })
       },
       handleEdit (index, data) {
-        if (!data._id) {
-          return this.$message.error('文章ID不能为空')
-        }
         this.$router.push({
           name: 'Blog-ArticleDetail',
           params: {
@@ -109,8 +106,3 @@
     }
   }
 </script>
-
-<style lang="stylus" scoped>
-  @import '~@/assets/stylus/vars/index'
-  @import '~@/assets/stylus/mixins/index'
-</style>

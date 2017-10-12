@@ -39,7 +39,7 @@
                   :key="index"
                   v-for="(keyword, index) in model.keywords"
                   closable
-                  type="success"
+                  type="warning"
                   :disable-transitions="false"
                   @close="handleDeleteKeywordItem(keyword, index)">
                   {{ keyword }}
@@ -151,7 +151,7 @@
 <script>
   import { mapGetters, mapActions } from 'vuex'
   import { FormEdit, MarkdownEditor } from '@/components/Common'
-  import { deepCopy } from '@/utils'
+  import { deepCopy, imageLoad } from '@/utils'
 
   export default {
     name: 'Blog-ArticleDetail',
@@ -236,6 +236,11 @@
         this.tagInputVisible = false
       },
       handlePreviewThumb () {
+        imageLoad(this.model.thumb, {
+          fail: err => {
+            this.$message.error(err ? err.message : '缩略图加载失败')
+          }
+        })
         this.thumbPreview = true
       },
       handleClosePreviewThumb () {

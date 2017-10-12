@@ -49,7 +49,6 @@ export const composeWithStore = store => {
           // 从别的页面通过路由跳转（浏览器前进后退）
           return _next(false)
         } else {
-          console.log(111)
           // 直接从地址栏输入/login回车跳转
           return _next({ name: 'Home' })
         }
