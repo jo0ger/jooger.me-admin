@@ -12,7 +12,7 @@
             <div slot="header">
               <span>基本信息</span>
             </div>
-            <el-form ref="form" :model="model" label-width="80px">
+            <el-form :model="model" label-width="80px">
               <el-form-item label="ID" v-if="model._id">
                 <span>{{ model._id }}</span>
               </el-form-item>

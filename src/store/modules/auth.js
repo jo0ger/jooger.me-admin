@@ -133,7 +133,7 @@ export const actions = {
     }
     return success
   },
-  async editInfo ({ commit, state }, params = {}) {
+  async update ({ commit, state }, params = {}) {
     if (state.loading || !state.info._id) {
       return
     }
