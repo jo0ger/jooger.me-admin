@@ -205,5 +205,6 @@ export const actions = {
     } else {
       commit(CREATE_ITEM_FAILURE)
     }
+    return success
   }
 }

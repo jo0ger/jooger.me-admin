@@ -203,11 +203,11 @@
                         <el-input v-model="model.links[index].site" placeholder="个人站点"></el-input>
                       </el-col>
                     </el-row>
-                    <el-row class="info" v-if="model.links[index].avatar || model.links[index].slogan">
-                      <el-col :span="2">
+                    <el-row :gutter="8" class="info" v-if="model.links[index].avatar || model.links[index].slogan">
+                      <el-col :span="3">
                         <img :src="model.links[index].avatar || defaultAvatar" class="avatar" alt="">
                       </el-col>
-                      <el-col :span="22">
+                      <el-col :span="21">
                         <el-input disabled :value="model.links[index].slogan || '暂无'" class="slogan"></el-input>
                       </el-col>
                     </el-row>

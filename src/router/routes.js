@@ -78,6 +78,16 @@ export default [
         }
       },
       {
+        path: 'articles/create',
+        name: 'Blog-ArticleCreate',
+        component: BlogArticleCreate,
+        meta: {
+          title: '新建文章',
+          icon: 'article-create',
+          hidden: true
+        }
+      },
+      {
         path: 'articles/:articleId',
         name: 'Blog-ArticleDetail',
         component: BlogArticleDetail,
@@ -89,16 +99,6 @@ export default [
             create: true,
             comment: true
           }
-        }
-      },
-      {
-        path: 'articles/create',
-        name: 'Blog-ArticleCreate',
-        component: BlogArticleCreate,
-        meta: {
-          title: '新建文章',
-          icon: 'article-create',
-          hidden: true
         }
       },
       {

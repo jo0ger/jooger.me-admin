@@ -117,7 +117,7 @@
             @click="handleViewQrcode(scope.$index, scope.row)">
             <i class="iconfont icon-qrcode"></i>
           </el-button>
-          <a :href="getArticleLink(scope.row)" target="_blank" class="operate skip-btn">
+          <a :href="getArticleLink(scope.row)" target="_blank" class="el-button el-button--text operate skip-btn">
             <i class="iconfont icon-skip-link"></i>
           </a>
         </template>

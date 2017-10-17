@@ -4,6 +4,9 @@
 
 <script>
   export default {
-    name: 'Blog'
+    name: 'Blog',
+    created () {
+      this.$store.dispatch('tag/fetchList')
+    }
   }
 </script>
