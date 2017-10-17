@@ -145,7 +145,7 @@
         }).then(async () => {
           await this.deleteTag(data._id)
           await this.fetchTaglist()
-        })
+        }).catch(() => {})
       },
       handleCloseEditBox () {
         this.model = null

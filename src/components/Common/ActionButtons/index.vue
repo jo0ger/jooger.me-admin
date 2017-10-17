@@ -12,11 +12,30 @@
         <i class="iconfont" :class="['icon-' + action.icon]" v-else></i>
       </a>
     </transition-group>
+    <el-dialog
+      title="新建标签"
+      width="500px"
+      center
+      :visible.async="showTagModal"
+      @close="handleCloseTagBox">
+      <el-form ref="form" :model="tagModel" label-width="60px">
+        <el-form-item label="名称">
+          <el-input v-model="tagModel.name" placeholder="请输入标题"></el-input>
+        </el-form-item>
+        <el-form-item label="描述">
+          <el-input type="textarea" :rows="4" v-model="tagModel.description" placeholder="请输入描述"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer">
+        <el-button @click="handleCloseTagBox">取 消</el-button>
+        <el-button type="primary" @click="handleCreateTag">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
+  import { mapGetters, mapActions } from 'vuex'
   import { scrollTo, easing } from '@/utils'
 
   export default {
@@ -28,7 +47,12 @@
         { key: 'go-to-top', title: '返回顶部', icon: 'go-to-top' }
       ]
       return {
-        actionMap
+        actionMap,
+        showTagModal: false,
+        tagModel: {
+          title: '',
+          description: ''
+        }
       }
     },
     computed: {
@@ -51,12 +75,17 @@
       }
     },
     methods: {
+      ...mapActions({
+        createTag: 'tag/create'
+      }),
       handleTriggerAction (key) {
         switch (key) {
           case 'create':
             const pageName = this.$route.name
             if (pageName.includes('Article')) {
               this.$router.push({ name: 'Blog-ArticleCreate' })
+            } else if (pageName.includes('Tag')) {
+              this.showTagModal = true
             }
             break
           case 'comment':
@@ -69,6 +98,21 @@
           default:
             break
         }
+      },
+      handleCloseTagBox () {
+        this.showTagModal = false
+        this.tagModel.title = ''
+        this.tagModel.description = ''
+      },
+      handleCreateTag () {
+        this.createTag({
+          name: this.tagModel.name,
+          description: this.tagModel.description
+        }).then(success => {
+          if (success) {
+            this.handleCloseTagBox()
+          }
+        })
       }
     }
   }
