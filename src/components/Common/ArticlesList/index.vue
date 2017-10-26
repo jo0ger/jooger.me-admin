@@ -4,7 +4,8 @@
       class="articles-table"
       v-loading="loading"
       element-loading-text="LOADING"
-      :data="list">
+      :data="list"
+      @sort-change="handleChangeSort">
       <el-table-column
         type="index"
         label="序号"
@@ -13,6 +14,15 @@
       <el-table-column
         prop="title"
         label="标题">
+      </el-table-column>
+      <el-table-column
+        prop="category"
+        label="分类"
+        width="80">
+        <template slot-scope="scope">
+          <span v-if="scope.row.category">{{ scope.row.category.name }}</span>
+          <span v-else>暂未分类</span>
+        </template>
       </el-table-column>
       <el-table-column
         prop="tag"
@@ -30,38 +40,28 @@
         </template>
       </el-table-column>
       <el-table-column
-        prop="keywords"
-        label="关键词"
-        width="200">
-        <template slot-scope="scope">
-          <template v-if="scope.row.keywords && scope.row.keywords.length">
-            <span class="keyword" v-for="(item, index) in scope.row.keywords" :key="index">
-              {{ item }}
-            </span>
-          </template>
-          <span v-else>--</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="meta"
+        prop="meta.pvs"
         label="浏览量"
-        width="70">
+        width="80"
+        sortable="custom">
         <template slot-scope="scope">
           <span>{{ scope.row.meta.pvs }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        prop="meta"
+        prop="meta.ups"
         label="点赞数"
-        width="70">
+        width="80"
+        sortable="custom">
         <template slot-scope="scope">
           <span>{{ scope.row.meta.ups }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        prop="meta"
+        prop="meta.comments"
         label="评论量"
-        width="70">
+        width="80"
+        sortable="custom">
         <template slot-scope="scope">
           <span>{{ scope.row.meta.comments }}</span>
         </template>
@@ -117,7 +117,8 @@
             @click="handleViewQrcode(scope.$index, scope.row)">
             <i class="iconfont icon-qrcode"></i>
           </el-button>
-          <a :href="getArticleLink(scope.row)" target="_blank" class="el-button el-button--text operate skip-btn">
+          <a :href="getArticleLink(scope.row)" target="_blank" class="el-button el-button--text operate skip-btn"
+            :class="{ 'is-disabled': scope.row.state !== 1 }">
             <i class="iconfont icon-skip-link"></i>
           </a>
         </template>
@@ -190,6 +191,9 @@
         }).then(() => this.$emit('delete', index, data))
       },
       getArticleLink (data) {
+        if (data.state !== 1) {
+          return 'javascript:;'
+        }
         return data.permalink || `https://jooger.me/blog/article/${data._id}`
       },
       handleViewQrcode (index, data) {
@@ -199,6 +203,9 @@
       },
       handleCloseQrcodeThumb () {
         this.qrcodeUrl = ''
+      },
+      handleChangeSort ({ column, prop, order }) {
+        this.$emit('sort', { prop, order })
       }
     }
   }
@@ -301,10 +308,23 @@
     .delete-btn {
       color $red
     }
-    .qrcode-btn
+    .qrcode-btn {
+      display inline-block
+      color $blue
+    }
+
     .skip-btn {
       display inline-block
-      color alpha($grey, .8)
+      color $grey
+
+      &.is-disabled {
+        color alpha($grey, .5)
+
+        &:hover {
+          opacity 1
+          transform scale(1)
+        }
+      }
     }
   }
 

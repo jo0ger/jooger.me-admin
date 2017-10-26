@@ -135,9 +135,10 @@
 
   .markdown-editor {
     position relative
+    background-color $white
     .command {
-      background $base-color
-      color $white
+      color $base-color
+      border-bottom 1px solid $border-color-4
       &-item {
         display inline-block
         width 48px
@@ -147,7 +148,6 @@
 
         .iconfont {
           display inline-block
-          font-weight bold
           transition all .3s $ease
         }
 
@@ -166,7 +166,6 @@
         position absolute
         width 100%
         height @width
-        background-color $white
       }
 
       .edit-pane {
@@ -199,7 +198,8 @@
         }
       }
       .command-item-preview {
-        background-color $green
+        background-color $base-color
+        color $white
       }
     }
   }

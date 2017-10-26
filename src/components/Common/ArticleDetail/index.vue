@@ -75,12 +75,12 @@
           </el-card>
         </el-col>
         <el-col :span="8">
-          <el-card>
+          <el-card v-if="articleModel.meta">
             <div slot="header">
               <span>其他信息</span>
             </div>
             <el-form ref="form" :model="model" label-width="80px">
-              <template v-if="model.meta">
+              <template>
                 <el-form-item label="浏览量">
                   <i class="iconfont icon-visit"></i>
                   <span style="margin-left: 8px">{{ model.meta.pvs }}</span>
@@ -126,7 +126,6 @@
               </el-form-item>
               <el-form-item label="标签">
                 <el-select
-                  style="width: 100%"
                   v-model="model.tag"
                   value-key="_id"
                   placeholder="标签选择"
