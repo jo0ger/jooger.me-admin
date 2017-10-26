@@ -168,7 +168,6 @@
         if (this.articleFilter.tag) {
           params.tag = this.articleFilter.tag
         }
-        console.log(params)
         await this.fetchArticlelistWrapper(params)
       }
     }

@@ -2,7 +2,8 @@
   <el-aside class="aside" :class="{ collapse: asideCollapse }" :width="asideCollapse ? '64px' : '200px'">
     <div class="admin-field">
       <router-link class="avatar" :to="{ name: 'Auth' }">
-        <img :src="authInfo.avatar" :alt="authInfo.name">
+        <img :src="avatar" :alt="authInfo.name" v-if="avatar">
+        <i class="iconfont icon-logo" v-else></i>
       </router-link>
       <div class="info">
         <h3 class="name">{{ authInfo.name }}</h3>
@@ -44,9 +45,15 @@
 
 <script>
   import { mapGetters } from 'vuex'
+  import { imageLoad } from '@/utils'
 
   export default {
     name: 'Layout-Aside',
+    data () {
+      return {
+        avatar: ''
+      }
+    },
     computed: {
       ...mapGetters({
         appRoutesMenu: 'app/routesMenu',
@@ -55,6 +62,24 @@
       }),
       defaultActive () {
         return this.$route.fullPath
+      }
+    },
+    watch: {
+      'authInfo.avatar' (val, oldVal) {
+        this.loadAvatar(val)
+      }
+    },
+    mounted () {
+      this.loadAvatar(this.authInfo.avatar)
+    },
+    methods: {
+      loadAvatar (url) {
+        this.avatar = ''
+        imageLoad(url, {
+          success: url => {
+            this.avatar = url
+          }
+        })
       }
     }
   }
@@ -87,9 +112,12 @@
         }
       }
 
-      .info {
-        margin-top 8px
+      .iconfont {
+        font-size 48px
+        color $base-color
+      }
 
+      .info {
         .name {
           font-size 20px
         }

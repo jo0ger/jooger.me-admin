@@ -156,6 +156,7 @@
           text-transform uppercase
           .logo {
             font-size 48px
+            text-shadow 0 0 40px $base-color
           }
         }
 
