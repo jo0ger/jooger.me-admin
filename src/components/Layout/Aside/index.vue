@@ -13,7 +13,7 @@
       <el-menu class="menu-list"
         :default-active="defaultActive"
         :collapse="asideCollapse"
-        active-text-color="#409EFF"
+        active-text-color="#ed0a75"
         router>
         <template v-for="menu in appRoutesMenu">
           <el-submenu

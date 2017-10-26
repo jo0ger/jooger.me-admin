@@ -3,9 +3,12 @@
     <div class="login-bg"></div>
     <div class="login-field">
       <div class="login-title">
-        <h5 class="title">Admin  Login</h5>
+        <h5 class="title">
+          <i class="iconfont icon-logo logo"></i>
+        </h5>
         <template v-if="hasAuthCache && !changeUser">
-          <img class="avatar" :src="authInfo.avatar" alt="">
+          <img class="avatar" :src="avatar" alt="" v-if="avatar">
+          <i class="iconfont icon-avatar" v-else></i>
           <p class="name">
             {{ authInfo.name }}
             <i class="iconfont icon-edit" title="切换用户" @click="handleChangeUser"></i>
@@ -49,11 +52,13 @@
 
 <script>
   import { mapGetters } from 'vuex'
+  import { imageLoad } from '@/utils'
 
   export default {
     name: 'Login-index',
     data () {
       return {
+        avatar: '',
         loginModel: {
           name: '',
           password: ''
@@ -78,6 +83,13 @@
       if (this.hasAuthCache) {
         this.loginModel.name = this.authInfo.name || ''
       }
+    },
+    mounted () {
+      imageLoad(this.authInfo.avatar, {
+        success: url => {
+          this.avatar = url
+        }
+      })
     },
     methods: {
       handleChangeUser () {
@@ -139,12 +151,16 @@
         margin-bottom 24px
         text-align center
 
-        .title, .name {
-          margin-bottom 36px
-          color $text-color-dark
-        }
         .title {
+          color $base-color
           text-transform uppercase
+          .logo {
+            font-size 48px
+          }
+        }
+
+        .name {
+          color $text-color-secondary
         }
 
         .avatar {
@@ -153,6 +169,10 @@
           margin-bottom 8px
           border-radius 50%
           border 4px solid alpha($white, .2)
+        }
+
+        .icon-avatar {
+          font-size 72px
         }
 
         .name {
