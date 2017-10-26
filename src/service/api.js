@@ -85,6 +85,13 @@ export default {
     update: id => wrap(`/articles/${id}`, 'patch'),
     delete: id => wrap(`/articles/${id}`, 'delete')
   },
+  category: {
+    create: wrap('/categories', 'post'),
+    list: wrap('/categories'),
+    item: id => wrap(`/categories/${id}`),
+    update: id => wrap(`/categories/${id}`, 'patch'),
+    delete: id => wrap(`/categories/${id}`, 'delete')
+  },
   tag: {
     create: wrap('/tags', 'post'),
     list: wrap('/tags'),

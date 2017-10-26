@@ -44,6 +44,17 @@
                 </el-input>
                 <el-button v-else size="small" @click="handleShowKeywordInput">+ 添加</el-button>
               </el-form-item>
+              <el-form-item label="分类">
+                <el-select v-model="model.category"
+                  value-key="_id"
+                  placeholder="分类选择">
+                  <el-option v-for="c in categoryList"
+                    :key="c._id"
+                    :label="c.name"
+                    :value="c">
+                  </el-option>
+                </el-select>
+              </el-form-item>
               <el-form-item label="标签">
                 <el-tag
                   style="margin-right: 8px"
@@ -91,12 +102,12 @@
               <el-form-item label="状态">
                 <el-switch
                   v-model="model.state"
-                  on-color="#13ce66"
-                  off-color="#878D99"
-                  on-text="已发布"
-                  off-text="草稿"
-                  :on-value="1"
-                  :off-value="0">
+                  active-color="#13ce66"
+                  inactive-color="#878D99"
+                  active-text="已发布"
+                  inactive-text="草稿"
+                  :active-value="1"
+                  :inactive-value="0">
                 </el-switch>
               </el-form-item>
               <el-form-item label="创建时间">
@@ -183,7 +194,8 @@
       ...mapGetters({
         articleDetailEditing: 'article/detailEditing',
         articleDetailLiking: 'article/detailLiking',
-        tagList: 'tag/list'
+        tagList: 'tag/list',
+        categoryList: 'category/list'
       })
     },
     watch: {
@@ -206,7 +218,9 @@
         editArticle: 'article/edit'
       }),
       buildModel () {
-        this.model = deepCopy({}, this.articleModel)
+        this.model = deepCopy({
+          category: {}
+        }, this.articleModel)
         this.createdAt = this.model.createdAt
       },
       handleDeleteKeywordItem (keyword, index) {
@@ -272,6 +286,9 @@
       },
       handleSubmit () {
         const model = deepCopy({}, this.model)
+        if (model.category) {
+          model.category = model.category._id
+        }
         model.tag = model.tag.map(item => item._id)
         if (this.createdAt && new Date(this.createdAt).getTime() !== new Date(this.model.createdAt).getTime()) {
           model.createdAt = this.createdAt

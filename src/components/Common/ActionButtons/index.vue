@@ -13,6 +13,25 @@
       </a>
     </transition-group>
     <el-dialog
+      title="新建分类"
+      width="500px"
+      center
+      :visible.async="showCategoryModal"
+      @close="handleCloseCategoryBox">
+      <el-form ref="form" :model="categoryModel" label-width="60px">
+        <el-form-item label="名称">
+          <el-input v-model="categoryModel.name" placeholder="请输入名称"></el-input>
+        </el-form-item>
+        <el-form-item label="描述">
+          <el-input type="textarea" :rows="4" v-model="categoryModel.description" placeholder="请输入描述"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer">
+        <el-button @click="handleCloseCategoryBox">取 消</el-button>
+        <el-button type="primary" @click="handleCreateCategory">确 定</el-button>
+      </div>
+    </el-dialog>
+    <el-dialog
       title="新建标签"
       width="500px"
       center
@@ -20,7 +39,7 @@
       @close="handleCloseTagBox">
       <el-form ref="form" :model="tagModel" label-width="60px">
         <el-form-item label="名称">
-          <el-input v-model="tagModel.name" placeholder="请输入标题"></el-input>
+          <el-input v-model="tagModel.name" placeholder="请输入名称"></el-input>
         </el-form-item>
         <el-form-item label="描述">
           <el-input type="textarea" :rows="4" v-model="tagModel.description" placeholder="请输入描述"></el-input>
@@ -48,9 +67,14 @@
       ]
       return {
         actionMap,
+        showCategoryModal: false,
         showTagModal: false,
+        categoryModel: {
+          name: '',
+          description: ''
+        },
         tagModel: {
-          title: '',
+          name: '',
           description: ''
         }
       }
@@ -76,6 +100,7 @@
     },
     methods: {
       ...mapActions({
+        createCategory: 'category/create',
         createTag: 'tag/create'
       }),
       handleTriggerAction (key) {
@@ -84,7 +109,9 @@
             const pageName = this.$route.name
             if (pageName.includes('Article')) {
               this.$router.push({ name: 'Blog-ArticleCreate' })
-            } else if (pageName.includes('Tag')) {
+            } else if (pageName.includes('Categories')) {
+              this.showCategoryModal = true
+            } else if (pageName.includes('Tags')) {
               this.showTagModal = true
             }
             break
@@ -99,9 +126,24 @@
             break
         }
       },
+      handleCloseCategoryBox () {
+        this.showCategoryModal = false
+        this.categoryModel.name = ''
+        this.categoryModel.description = ''
+      },
+      handleCreateCategory () {
+        this.createCategory({
+          name: this.categoryModel.name,
+          description: this.categoryModel.description
+        }).then(success => {
+          if (success) {
+            this.handleCloseCategoryBox()
+          }
+        })
+      },
       handleCloseTagBox () {
         this.showTagModal = false
-        this.tagModel.title = ''
+        this.tagModel.name = ''
         this.tagModel.description = ''
       },
       handleCreateTag () {
