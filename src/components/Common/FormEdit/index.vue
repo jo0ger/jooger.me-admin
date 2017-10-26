@@ -75,8 +75,8 @@
       position fixed
       right 0
       bottom 48px
-      background-color $white
-      box-shadow 0 -5px 40px -10px alpha($black, .2)
+      background-color alpha($white, .6)
+      box-shadow 0 -5px 40px -10px alpha($black, .1)
       transition all .5s $fuck
 
       .wrapper {

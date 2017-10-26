@@ -21,13 +21,13 @@
         width="80">
         <template slot-scope="scope">
           <span v-if="scope.row.category">{{ scope.row.category.name }}</span>
-          <span v-else>暂未分类</span>
+          <span v-else>--</span>
         </template>
       </el-table-column>
       <el-table-column
         prop="tag"
         label="标签"
-        width="180">
+        width="250">
         <template slot-scope="scope">
           <template v-if="scope.row.tag && scope.row.tag.length">
             <a class="tag-item" v-for="item in scope.row.tag" :key="item._id">
@@ -36,7 +36,7 @@
               </el-tag>
             </a>
           </template>
-          <span v-else>暂无标签</span>
+          <span v-else>--</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -78,7 +78,7 @@
       <el-table-column
         prop="state"
         label="状态"
-        width="80px">
+        width="120">
         <template slot-scope="scope">
           <div class="state published" v-if="scope.row.state === 1">
             <i class="indicator"></i>
@@ -90,7 +90,9 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="操作">
+      <el-table-column
+        label="操作"
+        width="200">
         <template slot-scope="scope">
           <el-button
             class="operate"
@@ -111,12 +113,11 @@
             @click="handleOpenDeleteBox(scope.$index, scope.row)">
             <i class="iconfont icon-delete"></i>
           </el-button>
-          <el-button
-            class="operate qrcode-btn"
-            type="text"
+          <a class="el-button el-button--text operate qrcode-btn"
+            :class="{ 'is-disabled': scope.row.state !== 1 }"
             @click="handleViewQrcode(scope.$index, scope.row)">
             <i class="iconfont icon-qrcode"></i>
-          </el-button>
+          </a>
           <a :href="getArticleLink(scope.row)" target="_blank" class="el-button el-button--text operate skip-btn"
             :class="{ 'is-disabled': scope.row.state !== 1 }">
             <i class="iconfont icon-skip-link"></i>
@@ -316,7 +317,10 @@
     .skip-btn {
       display inline-block
       color $grey
+    }
 
+    .qrcode-btn
+    .skip-btn {
       &.is-disabled {
         color alpha($grey, .5)
 

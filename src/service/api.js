@@ -59,14 +59,11 @@ fetcher.interceptors.response.use(response => {
       break
   }
   return response.data
-}, error => {
-  const status = error.response ? error.response.status : error.code
-  const message = error.message ? error.message : `请求错误${status ? `，code:${status}` : ''}`
+}, err => {
+  const status = err.response ? err.response.status : err.code
+  const message = err.message ? err.message : `请求错误${status ? `，code:${status}` : ''}`
   logMsg(message, 'error')
-  return error.response || {
-    code: codeMap.FAILED,
-    message
-  }
+  return Promise.reject(err)
 })
 
 const wrap = (url, type = 'get') => (config = {}) => fetcher.request({ ...config, method: type, url: `/backend${url}` })

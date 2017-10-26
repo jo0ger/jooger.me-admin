@@ -156,5 +156,15 @@ export default [
       icon: 'user-info',
       hidden: true
     }
+  },
+  {
+    path: '*',
+    name: 'PageNotFound',
+    redirect: {
+      name: 'Page404'
+    },
+    meta: {
+      hidden: true
+    }
   }
 ]

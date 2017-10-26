@@ -134,7 +134,7 @@ export const actions = {
       return
     }
     commit(FETCH_LIST_REQUEST)
-    const { success, data } = await api.article.list({ params }).catch(err => commit(FETCH_LIST_FAILURE, err))
+    const { success, data } = await api.article.list({ params }).catch(err => ((commit(FETCH_LIST_FAILURE, err), {})))
     if (success) {
       commit(FETCH_LIST_SUCCESS, data)
     } else {
@@ -147,7 +147,7 @@ export const actions = {
       return
     }
     commit(FETCH_ITEM_REQUEST)
-    const { success, data } = await api.article.item(id)().catch(err => commit(FETCH_ITEM_FAILURE, err))
+    const { success, data } = await api.article.item(id)().catch(err => ((commit(FETCH_ITEM_FAILURE, err), {})))
     if (success) {
       commit(FETCH_ITEM_SUCCESS, data)
     } else {
@@ -160,7 +160,7 @@ export const actions = {
       return
     }
     commit(EDIT_ITEM_REQUEST)
-    const { success, data } = await api.article.update(id)({ data: { ...model } }).catch(err => commit(EDIT_ITEM_FAILURE, err))
+    const { success, data } = await api.article.update(id)({ data: { ...model } }).catch(err => ((commit(EDIT_ITEM_FAILURE, err), {})))
     if (success) {
       commit(EDIT_ITEM_SUCCESS, data)
     } else {
@@ -173,7 +173,7 @@ export const actions = {
       return
     }
     commit(LIKE_ITEM_REQUEST)
-    const { success, data } = await api.article.like(id)().catch(err => commit(LIKE_ITEM_FAILURE, err))
+    const { success, data } = await api.article.like(id)().catch(err => ((commit(LIKE_ITEM_FAILURE, err), {})))
     if (success) {
       commit(LIKE_ITEM_SUCCESS, data)
     } else {
@@ -186,7 +186,7 @@ export const actions = {
       return
     }
     commit(DELETE_ITEM_REQUEST)
-    const { success } = await api.article.delete(id)().catch(err => commit(DELETE_ITEM_FAILURE, err))
+    const { success } = await api.article.delete(id)().catch(err => ((commit(DELETE_ITEM_FAILURE, err), {})))
     if (success) {
       commit(DELETE_ITEM_SUCCESS, id)
     } else {
@@ -199,7 +199,7 @@ export const actions = {
       return
     }
     commit(CREATE_ITEM_REQUEST)
-    const { success, data } = await api.article.create({ data: params }).catch(err => commit(CREATE_ITEM_FAILURE, err))
+    const { success, data } = await api.article.create({ data: params }).catch(err => ((commit(CREATE_ITEM_FAILURE, err), {})))
     if (success) {
       commit(CREATE_ITEM_SUCCESS, data)
     } else {

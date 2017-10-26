@@ -2,20 +2,22 @@
   <div id="app">
     <PageLoading v-if="authLoading"></PageLoading>
     <template v-else>
-      <router-view v-if="fullscreen"></router-view>
-      <el-container class="app-container" v-else>
-        <AppAside></AppAside>
-        <el-container style="overflow: hidden" direction="vertical">
-          <AppHeader></AppHeader>
-          <el-main class="app-main" @scroll.native.stop.prevent="handleScroll">
-            <Guide class="app-guide" v-if="$route.name !== 'Home'"></Guide>
-            <transition name="fade" mode="out-in">
-              <router-view></router-view>
-            </transition>
-          </el-main>
-          <AppFooter></AppFooter>
+      <transition name="fade" mode="out-in">
+        <router-view v-if="fullscreen"></router-view>
+        <el-container class="app-container" v-else>
+          <AppAside></AppAside>
+          <el-container style="overflow: hidden" direction="vertical">
+            <AppHeader></AppHeader>
+            <el-main class="app-main" @scroll.native.stop.prevent="handleScroll">
+              <Guide class="app-guide" v-if="showGuide"></Guide>
+              <transition name="fade" mode="out-in">
+                <router-view></router-view>
+              </transition>
+            </el-main>
+            <AppFooter></AppFooter>
+          </el-container>
         </el-container>
-      </el-container>
+      </transition>
     </template>
     <ActionButtons></ActionButtons>
   </div>
@@ -48,6 +50,9 @@
       }),
       fullscreen () {
         return this.$route.meta.fullscreen
+      },
+      showGuide () {
+        return !['Home'].includes(this.$route.name)
       }
     },
     methods: {
