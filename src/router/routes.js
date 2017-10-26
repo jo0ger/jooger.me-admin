@@ -14,6 +14,7 @@ const Blog = () => import(/* webpackChunkName: "Blog" */ '@/views/Blog')
 const BlogArticles = () => import(/* webpackChunkName: "BlogArticles" */ '@/views/Blog/Articles')
 const BlogArticleDetail = () => import(/* webpackChunkName: "BlogArticleDetail" */ '@/views/Blog/ArticleDetail')
 const BlogArticleCreate = () => import(/* webpackChunkName: "BlogArticleCreate" */ '@/views/Blog/ArticleCreate')
+const BlogCategories = () => import(/* webpackChunkName: "BlogCategories" */ '@/views/Blog/Categories')
 const BlogTags = () => import(/* webpackChunkName: "BlogTags" */ '@/views/Blog/Tags')
 const Setting = () => import(/* webpackChunkName: "Setting" */ '@/views/Setting')
 const Message = () => import(/* webpackChunkName: "Message" */ '@/views/Message')
@@ -98,6 +99,18 @@ export default [
           action: {
             create: true,
             comment: true
+          }
+        }
+      },
+      {
+        path: 'category',
+        name: 'Blog-BlogCategories',
+        component: BlogCategories,
+        meta: {
+          title: '分类',
+          icon: 'category',
+          action: {
+            create: true
           }
         }
       },

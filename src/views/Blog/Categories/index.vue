@@ -1,18 +1,18 @@
 <template>
-  <el-card class="blog-tags-page">
-    <el-form :inline="true" :model="tagFilter" class="demo-form-inline">
+  <el-card class="blog-categories-page">
+    <el-form :inline="true" :model="categoryFilter" class="demo-form-inline">
       <el-form-item>
-        <el-input v-model="tagFilter.name" @keyup.native.enter="handleSearch" size="mini" placeholder="请输入..."></el-input>
+        <el-input v-model="categoryFilter.name" @keyup.native.enter="handleSearch" size="mini" placeholder="请输入..."></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="handleSearch" icon="el-icon-search" size="mini">查询</el-button>
       </el-form-item>
     </el-form>
     <el-table
-      class="tags-table"
-      v-loading="tagListFetching"
+      class="categories-table"
+      v-loading="categoryListFetching"
       element-loading-text="LOADING"
-      :data="tagList">
+      :data="categoryList">
       <el-table-column
         type="index"
         label="序号"
@@ -62,7 +62,7 @@
       </el-table-column>
     </el-table>
     <el-dialog
-      title="标签编辑"
+      title="分类编辑"
       width="500px"
       center
       v-if="model"
@@ -70,7 +70,7 @@
       @close="handleCloseEditBox">
       <el-form ref="form" :model="model" label-width="60px">
         <el-form-item label="名称">
-          <el-input v-model="model.name" placeholder="请输入标题"></el-input>
+          <el-input v-model="model.name" placeholder="请输入名称"></el-input>
         </el-form-item>
         <el-form-item label="描述">
           <el-input type="textarea" :rows="4" v-model="model.description" placeholder="请输入描述"></el-input>
@@ -78,7 +78,7 @@
       </el-form>
       <div slot="footer">
         <el-button @click="handleCloseEditBox">取 消</el-button>
-        <el-button type="primary" @click="handleEditTagConfirm">确 定</el-button>
+        <el-button type="primary" @click="handleEditCategoryConfirm">确 定</el-button>
       </div>
     </el-dialog>
   </el-card>
@@ -89,10 +89,10 @@
   import { deepCopy } from '@/utils'
 
   export default {
-    name: 'Blog-Tag',
+    name: 'Blog-Category',
     data () {
       return {
-        tagFilter: {
+        categoryFilter: {
           name: ''
         },
         model: null
@@ -100,31 +100,31 @@
     },
     computed: {
       ...mapGetters({
-        tagList: 'tag/list',
-        tagListFetching: 'tag/listFetching'
+        categoryList: 'category/list',
+        categoryListFetching: 'category/listFetching'
       })
     },
     created () {
-      this.fetchTaglist()
+      this.fetchCategorylist()
     },
     methods: {
       ...mapActions({
-        fetchTaglist: 'tag/fetchList',
-        editTag: 'tag/edit',
-        deleteTag: 'tag/delete'
+        fetchCategorylist: 'category/fetchList',
+        editCategory: 'category/edit',
+        deleteCategory: 'category/delete'
       }),
       handleSearch () {
         const params = {}
-        if (this.tagFilter.name) {
-          params.keyword = this.tagFilter.name
+        if (this.categoryFilter.name) {
+          params.keyword = this.categoryFilter.name
         }
-        this.fetchTaglist(params)
+        this.fetchCategorylist(params)
       },
       handleEdit (index, data) {
         this.model = deepCopy({}, data)
       },
-      async handleEditTagConfirm () {
-        const success = await this.editTag({
+      async handleEditCategoryConfirm () {
+        const success = await this.editCategory({
           id: this.model._id,
           model: {
             name: this.model.name,
@@ -143,8 +143,8 @@
           type: 'warning',
           center: true
         }).then(async () => {
-          await this.deleteTag(data._id)
-          await this.fetchTaglist()
+          await this.deleteCategory(data._id)
+          await this.fetchCategorylist()
         }).catch(() => {})
       },
       handleCloseEditBox () {
@@ -158,7 +158,7 @@
   @import '~@/assets/stylus/vars/index'
   @import '~@/assets/stylus/mixins/index'
 
-  .tags-table {
+  .categories-table {
     font-size $font-size-base
 
     .operate {

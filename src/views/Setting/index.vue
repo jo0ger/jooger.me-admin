@@ -252,7 +252,7 @@
         <el-table-column
           prop="name"
           label="名称">
-          <template scope="scope">
+          <template slot-scope="scope">
             <a :href="`https://music.163.com/#/song?id=${scope.row.id}`" target="_blank" :key="scope.row.id">
               {{ scope.row.name }}
             </a>
@@ -262,7 +262,7 @@
           prop="artists"
           label="歌手"
           width="100">
-          <template scope="scope">
+          <template slot-scope="scope">
             <template v-for="(at, index) in scope.row.artists">
               <span :key="at.id" v-if="index !== 0"> / </span>
               <a :href="`https://music.163.com/#/artist?id=${at.id}`" target="_blank" :key="at.id">
@@ -274,7 +274,7 @@
         <el-table-column
           prop="album"
           label="专辑">
-          <template scope="scope">
+          <template slot-scope="scope">
             <a :href="`https://music.163.com/#/album?id=${scope.row.album.id}`" target="_blank">
               <span>{{ scope.row.album.name }}</span>
               <span class="alias" v-if="scope.row.album.tns && scope.row.album.tns.length">
@@ -291,7 +291,7 @@
           prop="duration"
           label="时长"
           width="80">
-          <template scope="scope">
+          <template slot-scope="scope">
             <i class="el-icon-time"></i>
             <span>{{ getMusicDuration(scope.row.duration) }}</span>
           </template>
@@ -300,7 +300,7 @@
           prop="lyric"
           label="歌词"
           width="50">
-          <template scope="scope">
+          <template slot-scope="scope">
             <span>{{ !!scope.row.lyric ? '有' : '无' }}</span>
           </template>
         </el-table-column>

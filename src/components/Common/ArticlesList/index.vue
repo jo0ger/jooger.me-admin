@@ -18,7 +18,7 @@
         prop="tag"
         label="标签"
         width="180">
-        <template scope="scope">
+        <template slot-scope="scope">
           <template v-if="scope.row.tag && scope.row.tag.length">
             <a class="tag-item" v-for="item in scope.row.tag" :key="item._id">
               <el-tag size="small">
@@ -33,7 +33,7 @@
         prop="keywords"
         label="关键词"
         width="200">
-        <template scope="scope">
+        <template slot-scope="scope">
           <template v-if="scope.row.keywords && scope.row.keywords.length">
             <span class="keyword" v-for="(item, index) in scope.row.keywords" :key="index">
               {{ item }}
@@ -46,7 +46,7 @@
         prop="meta"
         label="浏览量"
         width="70">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span>{{ scope.row.meta.pvs }}</span>
         </template>
       </el-table-column>
@@ -54,7 +54,7 @@
         prop="meta"
         label="点赞数"
         width="70">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span>{{ scope.row.meta.ups }}</span>
         </template>
       </el-table-column>
@@ -62,7 +62,7 @@
         prop="meta"
         label="评论量"
         width="70">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span>{{ scope.row.meta.comments }}</span>
         </template>
       </el-table-column>
@@ -70,7 +70,7 @@
         prop="createdAt"
         label="创建日期"
         width="180">
-        <template scope="scope">
+        <template slot-scope="scope">
           <i class="el-icon-time"></i>
           <span>{{ scope.row.createdAt | fmtDate('yyyy-MM-dd hh:mm:ss') }}</span>
         </template>
@@ -79,7 +79,7 @@
         prop="state"
         label="状态"
         width="80px">
-        <template scope="scope">
+        <template slot-scope="scope">
           <div class="state published" v-if="scope.row.state === 1">
             <i class="indicator"></i>
             <span class="text">已发布</span>
@@ -91,7 +91,7 @@
         </template>
       </el-table-column>
       <el-table-column label="操作">
-        <template scope="scope">
+        <template slot-scope="scope">
           <el-button
             class="operate"
             :class="[scope.row.state == 1 ? 'unpublish-btn' : 'publish-btn']"
