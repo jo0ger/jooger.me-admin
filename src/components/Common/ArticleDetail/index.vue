@@ -20,7 +20,7 @@
                 <el-input v-model="model.title" placeholder="请输入标题"></el-input>
               </el-form-item>
               <el-form-item label="简介">
-                <el-input type="textarea" :rows="4" v-model="model.description" placeholder="请输入简介"></el-input>
+                <el-input type="textarea" :rows="3" v-model="model.description" placeholder="请输入简介"></el-input>
               </el-form-item>
               <el-form-item label="关键词">
                 <el-tag
@@ -28,7 +28,6 @@
                   :key="index"
                   v-for="(keyword, index) in model.keywords"
                   closable
-                  type="warning"
                   :disable-transitions="false"
                   @close="handleDeleteKeywordItem(keyword, index)">
                   {{ keyword }}
@@ -44,39 +43,6 @@
                 </el-input>
                 <el-button v-else size="small" @click="handleShowKeywordInput">+ 添加</el-button>
               </el-form-item>
-              <el-form-item label="分类">
-                <el-select v-model="model.category"
-                  value-key="_id"
-                  placeholder="分类选择">
-                  <el-option v-for="c in categoryList"
-                    :key="c._id"
-                    :label="c.name"
-                    :value="c">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="标签">
-                <el-tag
-                  style="margin-right: 8px"
-                  :key="tag._id"
-                  v-for="(tag, index) in model.tag"
-                  closable
-                  :disable-transitions="false"
-                  @close="handleDeleteTagItem(tag, index)">
-                  {{ tag.name }}
-                </el-tag>
-                <el-autocomplete
-                  ref="saveTagInput"
-                  v-model="tagInput"
-                  :fetch-suggestions="tagFilter"
-                  placeholder="请输入标签名"
-                  size="small"
-                  @keyup.esc.native="handleHideTagInput"
-                  @select="handleSelectTag"
-                  v-if="tagInputVisible">
-                </el-autocomplete>
-                <el-button v-else class="button-new-tag" size="small" @click="handleShowTagInput">+ 添加</el-button>
-              </el-form-item>
               <el-form-item label="缩略图">
                 <el-row>
                   <el-col :span="20">
@@ -89,26 +55,6 @@
               </el-form-item>
               <el-form-item label="永久链接">
                 <el-input v-model="model.permalink" placeholder="请输入永久链接URL"></el-input>
-              </el-form-item>
-            </el-form>
-          </el-card>
-        </el-col>
-        <el-col :span="8">
-          <el-card>
-            <div slot="header">
-              <span>其他信息</span>
-            </div>
-            <el-form ref="form" :model="model" label-width="80px">
-              <el-form-item label="状态">
-                <el-switch
-                  v-model="model.state"
-                  active-color="#13ce66"
-                  inactive-color="#878D99"
-                  active-text="已发布"
-                  inactive-text="草稿"
-                  :active-value="1"
-                  :inactive-value="0">
-                </el-switch>
               </el-form-item>
               <el-form-item label="创建时间">
                 <el-date-picker
@@ -125,6 +71,15 @@
                 <i class="el-icon-time"></i>
                 <span style="margin-left: 8px">{{ model.publishedAt | fmtDate('yyyy-MM-dd hh:mm:ss') }}</span>
               </el-form-item>
+            </el-form>
+          </el-card>
+        </el-col>
+        <el-col :span="8">
+          <el-card>
+            <div slot="header">
+              <span>其他信息</span>
+            </div>
+            <el-form ref="form" :model="model" label-width="80px">
               <template v-if="model.meta">
                 <el-form-item label="浏览量">
                   <i class="iconfont icon-visit"></i>
@@ -139,6 +94,51 @@
                   <span style="margin-left: 8px">{{ model.meta.comments }}</span>
                 </el-form-item>
               </template>
+            </el-form>
+          </el-card>
+          <el-card>
+            <div slot="header">
+              <span>发布选项</span>
+            </div>
+            <el-form ref="form" :model="model" label-width="80px">
+              <el-form-item label="状态">
+                <el-switch
+                  v-model="model.state"
+                  active-color="#13ce66"
+                  inactive-color="#878D99"
+                  active-text="已发布"
+                  inactive-text="草稿"
+                  :active-value="1"
+                  :inactive-value="0">
+                </el-switch>
+              </el-form-item>
+              <el-form-item label="分类">
+                <el-select
+                  v-model="model.category"
+                  value-key="_id"
+                  placeholder="分类选择">
+                  <el-option v-for="c in categoryList"
+                    :key="c._id"
+                    :label="c.name"
+                    :value="c">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="标签">
+                <el-select
+                  style="width: 100%"
+                  v-model="model.tag"
+                  value-key="_id"
+                  placeholder="标签选择"
+                  clearable
+                  multiple>
+                  <el-option v-for="t in tagList"
+                    :key="t._id"
+                    :label="t.name"
+                    :value="t">
+                  </el-option>
+                </el-select>
+              </el-form-item>
             </el-form>
           </el-card>
         </el-col>
