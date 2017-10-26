@@ -9,7 +9,9 @@
           <AppHeader></AppHeader>
           <el-main class="app-main" @scroll.native.stop.prevent="handleScroll">
             <Guide class="app-guide" v-if="$route.name !== 'Home'"></Guide>
-            <router-view></router-view>
+            <transition name="fade" mode="out-in">
+              <router-view></router-view>
+            </transition>
           </el-main>
           <AppFooter></AppFooter>
         </el-container>

@@ -7,10 +7,43 @@
     </el-tabs>
     <el-form :inline="true" :model="articleFilter" class="demo-form-inline">
       <el-form-item>
+        <el-select
+          v-model="articleFilter.category"
+          value-key="_id"
+          placeholder="分类选择"
+          size="mini"
+          clearable>
+          <el-option
+            v-for="c in categoryList"
+            :key="c._id"
+            :label="c.name"
+            :value="c._id">
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item>
+        <el-select
+          v-model="articleFilter.tag"
+          value-key="_id"
+          placeholder="标签选择"
+          size="mini"
+          clearable>
+          <el-option
+            v-for="c in tagList"
+            :key="c._id"
+            :label="c.name"
+            :value="c._id">
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item>
         <el-input v-model="articleFilter.title" @keyup.native.enter="handleSearch" size="mini" placeholder="请输入..."></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="handleSearch" icon="el-icon-search" size="mini">查询</el-button>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="default" @click="handleReset" size="mini">重置</el-button>
       </el-form-item>
     </el-form>
     <ArticlesList
@@ -20,7 +53,8 @@
       @page-change="handlePageChange"
       @toggle-publish="handleTogglePublish"
       @edit="handleEdit"
-      @delete="handleDelete">
+      @delete="handleDelete"
+      @sort="handleSort">
     </ArticlesList>
   </el-card>
 </template>
@@ -39,7 +73,13 @@
         articleState: '-1',
         pageMap: [1, 1],
         articleFilter: {
+          category: '',
+          tag: '',
           title: ''
+        },
+        sort: {
+          by: '',
+          order: 0
         }
       }
     },
@@ -47,16 +87,18 @@
       ...mapGetters({
         articleList: 'article/list',
         articleListFetching: 'article/listFetching',
-        pagination: 'article/pagination'
+        pagination: 'article/pagination',
+        categoryList: 'category/list',
+        tagList: 'tag/list'
       })
     },
     watch: {
       articleState (val) {
-        this.fetchArticlelistWrapper()
+        this.handleReset()
       }
     },
     created () {
-      this.fetchArticlelistWrapper()
+      this.handleSearch()
     },
     methods: {
       ...mapActions({
@@ -70,6 +112,10 @@
         if (state >= 0) {
           param.state = state
         }
+        if (this.sort.by && [-1, 1].includes(this.sort.order)) {
+          param.sort_by = this.sort.by
+          param.order = this.sort.order
+        }
         await this.fetchArticlelist(Object.assign({}, param, config))
       },
       handlePageChange (page) {
@@ -80,7 +126,7 @@
           id: data._id,
           model: { state: ~~state }
         })
-        await this.fetchArticlelistWrapper({
+        await this.handleSearch({
           page: this.pagination.current_page
         })
       },
@@ -94,14 +140,36 @@
       },
       async handleDelete (index, data) {
         await this.deleteArticle(data._id)
-        await this.fetchArticlelistWrapper()
+        await this.handleSearch()
       },
-      handleSearch () {
-        const params = {}
+      handleSort ({ prop, order }) {
+        if (prop && order) {
+          this.sort.order = order === 'descending' ? -1 : 1
+          this.sort.by = prop
+        } else {
+          this.sort.order = 0
+          this.sort.by = ''
+        }
+        this.handleSearch()
+      },
+      handleReset () {
+        this.articleFilter.title = ''
+        this.articleFilter.category = ''
+        this.articleFilter.tag = ''
+        this.fetchArticlelistWrapper()
+      },
+      async handleSearch (params = {}) {
         if (this.articleFilter.title) {
           params.keyword = this.articleFilter.title
         }
-        this.fetchArticlelistWrapper(params)
+        if (this.articleFilter.category) {
+          params.category = this.articleFilter.category
+        }
+        if (this.articleFilter.tag) {
+          params.tag = this.articleFilter.tag
+        }
+        console.log(params)
+        await this.fetchArticlelistWrapper(params)
       }
     }
   }
