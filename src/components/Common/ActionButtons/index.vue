@@ -203,8 +203,8 @@
 
         &.comment {
           color $white
-          background-color $grey
-          box-shadow 4px 4px 20px 0 alpha($grey, .8)
+          background-color $blue
+          box-shadow 4px 4px 20px 0 alpha($blue, .8)
         }
       }
     }

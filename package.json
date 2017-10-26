@@ -9,6 +9,7 @@
     "start": "npm run dev",
     "build": "node build/build.js",
     "lint": "eslint --ext .js,.vue src",
+    "theme": "et -m -o src/assets/theme",
     "deploy": "pm2 deploy ecosystem.config.js production"
   },
   "repository": {
@@ -40,6 +41,7 @@
     "connect-history-api-fallback": "^1.4.0",
     "copy-webpack-plugin": "^4.2.0",
     "css-loader": "^0.28.0",
+    "element-theme-chalk": "^2.0.0-rc.1",
     "eslint": "^3.19.0",
     "eslint-config-standard": "^10.2.1",
     "eslint-friendly-formatter": "^3.0.0",

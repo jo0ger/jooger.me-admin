@@ -296,7 +296,7 @@
       color $yellow
     }
     .edit-btn {
-      color $blue
+      color $base-color
     }
     .delete-btn {
       color $red
