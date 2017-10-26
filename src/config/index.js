@@ -25,7 +25,7 @@ export default {
       'Accept': 'application/json'
     },
     withCredentials: true,
-    timeout: 120000,
+    timeout: 60000,
     responseType: 'json'
   }
 }

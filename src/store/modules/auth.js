@@ -92,9 +92,8 @@ export const actions = {
       return
     }
     commit(LOGIN_REQUEST)
-    const { success, data } = await api.auth.login({ data: params }).catch(err => commit(LOGIN_FAILURE, err))
+    const { success, data } = await api.auth.login({ data: params }).catch(err => ((commit(LOGIN_FAILURE, err), {})))
     if (success) {
-      console.log(state)
       commit(LOGIN_SUCCESS, data.token)
       setLocalStorageItem(config.auth.authTokenKey, data.token)
       await dispatch('getInfo')
@@ -108,7 +107,7 @@ export const actions = {
       return
     }
     commit(LOGOUT_REQUEST)
-    const { success } = await api.auth.logout().catch(err => commit(LOGOUT_FAILURE, err))
+    const { success } = await api.auth.logout().catch(err => ((commit(LOGOUT_FAILURE, err), {})))
     if (success) {
       dispatch('clearAuthInfo')
       commit(LOGOUT_SUCCESS)
@@ -122,9 +121,7 @@ export const actions = {
       return
     }
     commit(FETCH_INFO_REQUEST)
-    const { success, data } = await api.auth.info().catch(err => {
-      commit(FETCH_INFO_FAILURE, err)
-    })
+    const { success, data } = await api.auth.info().catch(err => ((commit(FETCH_INFO_FAILURE, err), {})))
     if (success) {
       setLocalStorageItem(config.auth.authInfoCacheKey, data.info)
       commit(FETCH_INFO_SUCCESS, data)
@@ -138,7 +135,7 @@ export const actions = {
       return
     }
     commit(EDIT_INFO_REQUEST)
-    const { success, data } = await api.user.update(state.info._id)({ data: params }).catch(err => commit(EDIT_INFO_FAILURE, err))
+    const { success, data } = await api.user.update(state.info._id)({ data: params }).catch(err => ((commit(EDIT_INFO_FAILURE, err), {})))
     if (success) {
       commit(EDIT_INFO_SUCCESS, data)
     } else {

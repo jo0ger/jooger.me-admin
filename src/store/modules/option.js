@@ -48,7 +48,7 @@ export const actions = {
       return
     }
     commit(FETCH_REQUEST)
-    const { success, data } = await api.option.fetch().catch(err => commit(FETCH_FAILURE, err))
+    const { success, data } = await api.option.fetch().catch(err => ((commit(FETCH_FAILURE, err), {})))
     if (success) {
       commit(FETCH_SUCCESS, data)
     } else {
@@ -61,7 +61,7 @@ export const actions = {
       return
     }
     commit(UPDATE_REQUEST)
-    const { success, data } = await api.option.update({ data: params }).catch(err => commit(UPDATE_FAILURE, err))
+    const { success, data } = await api.option.update({ data: params }).catch(err => ((commit(UPDATE_FAILURE, err), {})))
     if (success) {
       commit(UPDATE_SUCCESS, data)
     } else {
