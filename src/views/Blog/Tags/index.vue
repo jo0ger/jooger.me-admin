@@ -20,12 +20,12 @@
       </el-table-column>
       <el-table-column
         prop="name"
-        label="名称">
+        label="名称"
+        width="200">
       </el-table-column>
       <el-table-column
         prop="description"
-        label="描述"
-        width="350px">
+        label="描述">
         <template slot-scope="scope">
           <p>{{ scope.row.description || '--' }}</p>
         </template>
@@ -33,18 +33,20 @@
       <el-table-column
         prop="count"
         label="文章数"
-        width="100px">
+        width="100">
       </el-table-column>
       <el-table-column
         prop="createdAt"
         label="创建日期"
-        width="180">
+        width="200">
         <template slot-scope="scope">
           <i class="el-icon-time"></i>
           <span>{{ scope.row.createdAt | fmtDate('yyyy-MM-dd hh:mm:ss') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作">
+      <el-table-column
+        label="操作"
+        width="200">
         <template slot-scope="scope">
           <el-button
             class="operate edit-btn"
