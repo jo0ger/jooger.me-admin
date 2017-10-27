@@ -14,6 +14,10 @@
           size="mini"
           clearable>
           <el-option
+            label="全部"
+            :value="''">
+          </el-option>
+          <el-option
             v-for="c in categoryList"
             :key="c._id"
             :label="c.name"
@@ -28,6 +32,10 @@
           placeholder="标签选择"
           size="mini"
           clearable>
+          <el-option
+            label="全部"
+            :value="''">
+          </el-option>
           <el-option
             v-for="c in tagList"
             :key="c._id"
