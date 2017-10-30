@@ -7,8 +7,11 @@ import '@/assets/stylus/index'
 import router, { composeWithStore } from './router'
 import store from './store'
 import '@/filters'
+import eventBus from './eventBus'
 
 Vue.config.productionTip = false
+
+Vue.prototype.$eventBus = eventBus
 
 composeWithStore(store)
 
