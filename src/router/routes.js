@@ -19,6 +19,7 @@ const BlogTags = () => import(/* webpackChunkName: "BlogTags" */ '@/views/Blog/T
 const Setting = () => import(/* webpackChunkName: "Setting" */ '@/views/Setting')
 const Message = () => import(/* webpackChunkName: "Message" */ '@/views/Message')
 const Auth = () => import(/* webpackChunkName: "Auth" */ '@/views/Auth')
+const Moment = () => import(/* webpackChunkName: "Moment" */ '@/views/Moment')
 
 export default [
   {
@@ -56,6 +57,18 @@ export default [
     meta: {
       title: '首页',
       icon: 'home'
+    }
+  },
+  {
+    path: '/moments',
+    name: 'Moments',
+    component: Moment,
+    meta: {
+      title: '个人动态',
+      icon: 'moment',
+      action: {
+        create: true
+      }
     }
   },
   {

@@ -50,12 +50,36 @@
         <el-button type="primary" @click="handleCreateTag">确 定</el-button>
       </div>
     </el-dialog>
+    <el-dialog
+      title="新建个人动态"
+      width="500px"
+      center
+      :visible.async="showMomentModal"
+      @close="handleCloseMomentBox">
+      <el-form ref="form" :model="momentModel" label-width="60px">
+        <el-form-item label="发布">
+          <el-switch
+            v-model="momentModel.state"
+            :active-value="1"
+            :inactive-value="0">
+          </el-switch>
+        </el-form-item>
+        <el-form-item label="内容">
+          <el-input type="textarea" :rows="4" v-model="momentModel.content" placeholder="请输入内容"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer">
+        <el-button @click="handleCloseMomentBox">取 消</el-button>
+        <el-button type="primary" @click="handleCreateMoment">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
   import { mapGetters, mapActions } from 'vuex'
   import { scrollTo, easing } from '@/utils'
+  import { api } from '@/service'
 
   export default {
     name: 'ActionButtons',
@@ -69,6 +93,7 @@
         actionMap,
         showCategoryModal: false,
         showTagModal: false,
+        showMomentModal: false,
         categoryModel: {
           name: '',
           description: ''
@@ -76,6 +101,10 @@
         tagModel: {
           name: '',
           description: ''
+        },
+        momentModel: {
+          state: 1,
+          content: ''
         }
       }
     },
@@ -113,6 +142,8 @@
               this.showCategoryModal = true
             } else if (pageName.includes('Tags')) {
               this.showTagModal = true
+            } else if (pageName.includes('Moments')) {
+              this.showMomentModal = true
             }
             break
           case 'comment':
@@ -155,6 +186,20 @@
             this.handleCloseTagBox()
           }
         })
+      },
+      handleCloseMomentBox () {
+        this.showMomentModal = false
+        this.momentModel.state = 1
+        this.momentModel.content = ''
+      },
+      async handleCreateMoment () {
+        const { success } = await api.moment.create({
+          data: { ...this.momentModel }
+        }).catch(() => ({}))
+        if (success) {
+          this.handleCloseMomentBox()
+          this.$eventBus.$emit('create-moment')
+        }
       }
     }
   }

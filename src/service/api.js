@@ -108,5 +108,11 @@ export default {
   },
   music: {
     list: wrap('/music/songs')
+  },
+  moment: {
+    create: wrap('/moments', 'post'),
+    list: wrap('/moments'),
+    update: id => wrap(`/moments/${id}`, 'patch'),
+    delete: id => wrap(`/moments/${id}`, 'delete')
   }
 }
