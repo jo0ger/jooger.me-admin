@@ -13,10 +13,13 @@
               <span>基本信息</span>
             </div>
             <el-form :model="model" label-width="80px">
-              <el-form-item label="ID" v-if="model._id">
-                <span>{{ model._id }}</span>
+              <el-form-item label="状态">
+                <el-radio-group v-model="model.state" size="small">
+                  <el-radio :label="0" border>未发布</el-radio>
+                  <el-radio :label="1" border>已发布</el-radio>
+                </el-radio-group>
               </el-form-item>
-              <el-form-item label="标题">
+              <el-form-item label="标题" required>
                 <el-input v-model="model.title" placeholder="请输入标题"></el-input>
               </el-form-item>
               <el-form-item label="简介">
@@ -43,39 +46,20 @@
                 </el-input>
                 <el-button v-else size="small" @click="handleShowKeywordInput">+ 添加</el-button>
               </el-form-item>
-              <el-form-item label="缩略图">
-                <el-row>
-                  <el-col :span="20">
-                    <el-input v-model="model.thumb" placeholder="请输入缩略图URL"></el-input>
-                  </el-col>
-                  <el-col :span="2">
-                    <el-button style="margin-left: 16px" type="primary" :disabled="!model.thumb" size="mini" plain round icon='el-icon-search' @click="handlePreviewThumb"></el-button>
-                  </el-col>
-                </el-row>
-              </el-form-item>
-              <el-form-item label="永久链接">
-                <el-input v-model="model.permalink" placeholder="请输入永久链接URL"></el-input>
-              </el-form-item>
-              <el-form-item label="创建时间">
-                <el-date-picker
-                  v-model="createdAt"
-                  type="datetime"
-                  placeholder="选择创建日期时间">
-                </el-date-picker>
-              </el-form-item>
-              <el-form-item label="更新时间" v-if="model.updatedAt">
-                <i class="el-icon-time"></i>
-                <span style="margin-left: 8px">{{ model.updatedAt | fmtDate('yyyy-MM-dd hh:mm:ss') }}</span>
-              </el-form-item>
-              <el-form-item label="发布时间" v-if="model.publishedAt">
-                <i class="el-icon-time"></i>
-                <span style="margin-left: 8px">{{ model.publishedAt | fmtDate('yyyy-MM-dd hh:mm:ss') }}</span>
+              <el-form-item label="永久链接" v-if="model.permalink">
+                <el-input v-model="model.permalink" disabled placeholder="请输入永久链接URL"></el-input>
               </el-form-item>
             </el-form>
           </el-card>
+          <el-card>
+            <MarkdownEditor
+              :value="model.content"
+              @change="handleEditorValueChange">
+            </MarkdownEditor>
+          </el-card>
         </el-col>
         <el-col :span="8">
-          <el-card v-if="articleModel.meta">
+          <!-- <el-card v-if="articleModel.meta">
             <div slot="header">
               <span>其他信息</span>
             </div>
@@ -95,23 +79,12 @@
                 </el-form-item>
               </template>
             </el-form>
-          </el-card>
+          </el-card> -->
           <el-card>
             <div slot="header">
-              <span>发布选项</span>
+              <span>分类标签</span>
             </div>
-            <el-form ref="form" :model="model" label-width="80px">
-              <el-form-item label="状态">
-                <el-switch
-                  v-model="model.state"
-                  active-color="#13ce66"
-                  inactive-color="#878D99"
-                  active-text="已发布"
-                  inactive-text="草稿"
-                  :active-value="1"
-                  :inactive-value="0">
-                </el-switch>
-              </el-form-item>
+            <el-form ref="form" :model="model" label-width="50px">
               <el-form-item label="分类">
                 <el-select
                   v-model="model.category"
@@ -140,12 +113,40 @@
               </el-form-item>
             </el-form>
           </el-card>
+          <el-card>
+            <div slot="header">
+              <span>缩略图</span>
+            </div>
+            <Uploader :url="model.thumb"
+              :name="uploadName"
+              @on-success="uploadSuccess"
+              @on-delete="deleteThumb"
+              @on-preview="handlePreviewThumb"></Uploader>
+          </el-card>
+          <el-card>
+            <div slot="header">
+              <span>相关时间</span>
+            </div>
+            <el-form ref="form" :model="model" label-width="80px">
+              <el-form-item label="创建时间">
+                <el-date-picker
+                  v-model="createdAt"
+                  type="datetime"
+                  placeholder="选择创建日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item label="更新时间" v-if="model.updatedAt">
+                <i class="el-icon-time"></i>
+                <span style="margin-left: 8px">{{ model.updatedAt | fmtDate('yyyy-MM-dd hh:mm:ss') }}</span>
+              </el-form-item>
+              <el-form-item label="发布时间" v-if="model.publishedAt">
+                <i class="el-icon-time"></i>
+                <span style="margin-left: 8px">{{ model.publishedAt | fmtDate('yyyy-MM-dd hh:mm:ss') }}</span>
+              </el-form-item>
+            </el-form>
+          </el-card>
         </el-col>
       </el-row>
-      <MarkdownEditor
-        :value="model.content"
-        @change="handleEditorValueChange">
-      </MarkdownEditor>
     </FormEdit>
     <el-dialog
       title="缩略图预览"
@@ -162,15 +163,18 @@
 
 <script>
   import { mapGetters, mapActions } from 'vuex'
+  import moment from 'moment'
   import FormEdit from '../FormEdit'
   import MarkdownEditor from '../MarkdownEditor'
+  import Uploader from '../Uploader'
   import { deepCopy, imageLoad } from '@/utils'
 
   export default {
     name: 'ArticleDetail',
     components: {
       FormEdit,
-      MarkdownEditor
+      MarkdownEditor,
+      Uploader
     },
     props: {
       articleModel: {
@@ -195,7 +199,11 @@
         articleDetailLiking: 'article/detailLiking',
         tagList: 'tag/list',
         categoryList: 'category/list'
-      })
+      }),
+      uploadName () {
+        const date = this.articleModel.createdAt ? moment(this.articleModel.createdAt) : moment()
+        return `source/${date.format('YYYYMMDD')}/`
+      }
     },
     watch: {
       articleModel (val, oldVal) {
@@ -220,7 +228,13 @@
         this.model = deepCopy({
           category: {}
         }, this.articleModel)
-        this.createdAt = this.model.createdAt
+        this.createdAt = this.model.createdAt || new Date()
+      },
+      uploadSuccess (thumb) {
+        this.model.thumb = thumb
+      },
+      deleteThumb () {
+        this.model.thumb = ''
       },
       handleDeleteKeywordItem (keyword, index) {
         this.model.keywords.splice(index, 1)
@@ -266,8 +280,8 @@
         this.tagInput = ''
         this.tagInputVisible = false
       },
-      handlePreviewThumb () {
-        imageLoad(this.model.thumb, {
+      handlePreviewThumb (url) {
+        imageLoad(url, {
           fail: err => {
             this.$message.error(err ? err.message : '缩略图加载失败')
           }

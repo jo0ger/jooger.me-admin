@@ -18,7 +18,9 @@ module.exports = {
   globals: {
     __DEV__: true,
     __PROD__: true,
-    __TEST__: true
+    __TEST__: true,
+    window: true,
+    particlesJS: true
   },
   // add your custom rules here
   'rules': {

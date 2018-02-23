@@ -10,14 +10,16 @@ const SET_ROUTES = 'SET_ROUTES'
 const SET_ASIDE_COLLAPSE = 'SET_ASIDE_COLLAPSE'
 const SET_ACTION_BUTTON_VISIBLE = 'SET_ACTION_BUTTON_VISIBLE'
 
+const getDefaultButtonVisible = () => ({
+  goToTop: false,
+  create: false,
+  comment: false
+})
+
 export const state = {
   routes: [],
   asideCollapse: false,
-  actionButtonVisible: {
-    goToTop: false,
-    create: false,
-    comment: false
-  }
+  actionButtonVisible: getDefaultButtonVisible()
 }
 
 export const getters = {

@@ -25,6 +25,9 @@
         <el-form-item label="描述">
           <el-input type="textarea" :rows="4" v-model="categoryModel.description" placeholder="请输入描述"></el-input>
         </el-form-item>
+        <el-form-item label="排序">
+          <el-input-number v-model="categoryModel.list" :step="1" :min="1"></el-input-number>
+        </el-form-item>
       </el-form>
       <div slot="footer">
         <el-button @click="handleCloseCategoryBox">取 消</el-button>
@@ -96,7 +99,8 @@
         showMomentModal: false,
         categoryModel: {
           name: '',
-          description: ''
+          description: '',
+          list: 1
         },
         tagModel: {
           name: '',

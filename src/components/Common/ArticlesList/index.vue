@@ -43,7 +43,7 @@
         prop="meta.pvs"
         label="浏览量"
         width="80"
-        sortable="custom">
+        sortable>
         <template slot-scope="scope">
           <span>{{ scope.row.meta.pvs }}</span>
         </template>
@@ -52,7 +52,7 @@
         prop="meta.ups"
         label="点赞数"
         width="80"
-        sortable="custom">
+        sortable>
         <template slot-scope="scope">
           <span>{{ scope.row.meta.ups }}</span>
         </template>
@@ -61,7 +61,7 @@
         prop="meta.comments"
         label="评论量"
         width="80"
-        sortable="custom">
+        sortable>
         <template slot-scope="scope">
           <span>{{ scope.row.meta.comments }}</span>
         </template>
@@ -198,6 +198,9 @@
         return data.permalink || `https://jooger.me/blog/article/${data._id}`
       },
       handleViewQrcode (index, data) {
+        if (data.state !== 1) {
+          return 'javascript:;'
+        }
         qrcode.toDataURL(this.getArticleLink(data)).then(data => {
           this.qrcodeUrl = data
         })
