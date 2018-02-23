@@ -10,6 +10,7 @@ import Axios from 'axios'
 import store from '@/store'
 import config from '@/config'
 import { Message } from 'element-ui'
+import OSS from 'ali-oss'
 
 const logMsg = (msg = '', type = 'success') => {
   if (msg) {
@@ -68,7 +69,7 @@ fetcher.interceptors.response.use(response => {
 
 const wrap = (url, type = 'get') => (config = {}) => fetcher.request({ ...config, method: type, url: `/backend${url}` })
 
-export default {
+const api = {
   auth: {
     login: wrap('/auth/local/login', 'post'),
     logout: wrap('/auth/local/logout'),
@@ -114,5 +115,30 @@ export default {
     list: wrap('/moments'),
     update: id => wrap(`/moments/${id}`, 'patch'),
     delete: id => wrap(`/moments/${id}`, 'delete')
+  },
+  aliyun: {
+    oss: wrap('/aliyun/oss'),
+    upload: (name, file, options) => {
+      return getAliyunClient()
+        .then(() => _aliyunClient.multipartUpload(name, file, Object.assign({}, options)))
+        .then(res => {
+          return {
+            url: res.res.requestUrls[0].replace(`http://${_aliyunClient.options.bucket}.${_aliyunClient.options.region}.aliyuncs.com`, 'https://static.jooger.me') || ''
+          }
+        })
+    }
   }
+}
+
+export default api
+
+let _aliyunClient = null
+function getAliyunClient () {
+  if (_aliyunClient && _aliyunClient instanceof OSS.Wrapper) return Promise.resolve()
+  return api.aliyun.oss().then(res => {
+    if (res.success && res.data) {
+      _aliyunClient = new OSS.Wrapper(res.data)
+    }
+    return _aliyunClient
+  })
 }

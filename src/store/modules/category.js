@@ -86,7 +86,9 @@ export const mutations = {
   [CREATE_ITEM_FAILURE]: state => (state.list.creating = false),
   [CREATE_ITEM_SUCCESS]: (state, data) => {
     state.list.creating = false
-    state.list.data.unshift(data)
+    state.list.data.unshift(Object.assign(data, {
+      count: 0
+    }))
   }
 }
 

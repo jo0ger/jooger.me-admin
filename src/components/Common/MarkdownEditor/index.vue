@@ -182,6 +182,7 @@
       .preview-pane {
         padding 16px
         overflow-y auto
+        background $white
       }
     }
 
