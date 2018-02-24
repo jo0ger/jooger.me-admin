@@ -4,7 +4,7 @@
       <i class="iconfont" :class="[`icon-${asideCollapse ? 'unfold' : 'fold'}`]"></i>
     </a>
     <div class="action">
-      <router-link :to="{ name: 'Message' }" class="action-item message">
+      <router-link to="/" class="action-item message">
         <el-badge is-dot>
           <i class="iconfont icon-message"></i>
         </el-badge>

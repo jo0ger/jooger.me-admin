@@ -8,14 +8,16 @@ import router, { composeWithStore } from './router'
 import store from './store'
 import '@/filters'
 import eventBus from './eventBus'
+import installRaven from './raven'
 
 Vue.config.productionTip = false
 
 Vue.prototype.$eventBus = eventBus
 
+installRaven(Vue)
+
 composeWithStore(store)
 
-/* eslint-disable no-new */
 const app = new Vue({
   el: '#app',
   router,
