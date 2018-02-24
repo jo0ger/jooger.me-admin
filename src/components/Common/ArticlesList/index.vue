@@ -12,13 +12,26 @@
         width="50">
       </el-table-column>
       <el-table-column
+        prop="thumb"
+        width="120"
+        label="缩略图">
+        <template slot-scope="scope">
+          <img class="thumb" :src="scope.row.thumb" :alt="scope.row.title" v-if="scope.row.thumb">
+          <div class="thumb-placeholder" v-else></div>
+        </template>
+      </el-table-column>
+      <el-table-column
         prop="title"
         label="标题">
+        <template slot-scope="scope">
+          <h6 class="title">{{ scope.row.title }}</h6>
+          <p class="description">{{ scope.row.description }}</p>
+        </template>
       </el-table-column>
       <el-table-column
         prop="category"
         label="分类"
-        width="80">
+        width="100">
         <template slot-scope="scope">
           <span v-if="scope.row.category">{{ scope.row.category.name }}</span>
           <span v-else>--</span>
@@ -78,7 +91,7 @@
       <el-table-column
         prop="state"
         label="状态"
-        width="120">
+        width="100">
         <template slot-scope="scope">
           <div class="state published" v-if="scope.row.state === 1">
             <i class="indicator"></i>
@@ -222,18 +235,20 @@
   .articles-table {
     font-size $font-size-base
 
-    .skip-link {
-      margin-left 8px
-      color $text-color-secondary
-
-      &:hover {
-        color $base-color
+    .thumb {
+      border-radius 2px
+      &-placeholder {
+        width 100%
+        height 50px
+        background $grey-4
+        border-radius 2px
       }
     }
-    .keyword {
-      display inline-block
-      margin-right 10px
+
+    .title {
+      font-weight 600
     }
+
     .tag-item + .tag-item {
       margin-left 8px
     }
