@@ -6,7 +6,7 @@
 
 * jooger.me: [https://jooger.me](https://jooger.me)
 
-* jooger.me-server: [https://api.jooger.me](https://api.jooger.me)
+* node-server: [https://api.jooger.me](https://api.jooger.me)
 
 * jooger.me-admin: [https://admin.jooger.me](https://admin.jooger.me)
 
@@ -28,8 +28,6 @@ $ npm run build --report
 # lint test
 $ npm run lint
 
-# build theme (http://element.eleme.io/2.0/#/zh-CN/component/custom-theme)
-$ npm run theme
 ```
 
 ## TODOS
@@ -42,9 +40,9 @@ $ npm run theme
 
 * ~~个人动态~~ (2017.10.31)
 
-* 站内消息
+* ~~接入Sentry~~ (2018.02.24)
 
-* 日志
+* 站内消息
 
 * Dashboard统计
 
