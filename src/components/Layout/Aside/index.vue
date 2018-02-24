@@ -3,7 +3,7 @@
     <div class="admin-field">
       <router-link class="avatar" :to="{ name: 'Auth' }">
         <img :src="avatar" :alt="authInfo.name" v-if="avatar">
-        <i class="iconfont icon-logo" v-else></i>
+        <img :src="logo" alt="" v-else>
       </router-link>
       <div class="info">
         <h3 class="name">{{ authInfo.name }}</h3>
@@ -14,7 +14,6 @@
       <el-menu class="menu-list"
         :default-active="defaultActive"
         :collapse="asideCollapse"
-        active-text-color="#ed0a75"
         router>
         <template v-for="menu in appRoutesMenu">
           <el-submenu
@@ -46,11 +45,13 @@
 <script>
   import { mapGetters } from 'vuex'
   import { imageLoad } from '@/utils'
+  import logo from '@@/static/image/logo.svg'
 
   export default {
     name: 'Layout-Aside',
     data () {
       return {
+        logo,
         avatar: ''
       }
     },
@@ -76,7 +77,7 @@
       loadAvatar (url) {
         this.avatar = ''
         imageLoad(url, {
-          success: url => {
+          success: () => {
             this.avatar = url
           }
         })

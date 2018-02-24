@@ -36,6 +36,11 @@
         width="100">
       </el-table-column>
       <el-table-column
+        prop="list"
+        label="排序"
+        width="100">
+      </el-table-column>
+      <el-table-column
         prop="createdAt"
         label="创建日期"
         width="200">
@@ -74,6 +79,9 @@
         </el-form-item>
         <el-form-item label="描述">
           <el-input type="textarea" :rows="4" v-model="model.description" placeholder="请输入描述"></el-input>
+        </el-form-item>
+        <el-form-item label="排序">
+          <el-input-number v-model="model.list" :step="1" :min="1"></el-input-number>
         </el-form-item>
       </el-form>
       <div slot="footer">
@@ -128,7 +136,8 @@
           id: this.model._id,
           model: {
             name: this.model.name,
-            description: this.model.description
+            description: this.model.description,
+            list: this.model.list
           }
         })
         if (success) {
@@ -136,7 +145,7 @@
         }
       },
       handleDelete (index, data) {
-        this.$confirm('<strong>此操作将永久删除该标签，并且删除所有文章关联关系，是否继续?</strong>', '提示', {
+        this.$confirm('<strong>此操作将永久删除该标签，是否继续?</strong>', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           dangerouslyUseHTMLString: true,

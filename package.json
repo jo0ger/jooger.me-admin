@@ -9,7 +9,6 @@
     "start": "npm run dev",
     "build": "node build/build.js",
     "lint": "eslint --ext .js,.vue src",
-    "theme": "et -m -o src/assets/theme",
     "deploy": "pm2 deploy ecosystem.config.js production"
   },
   "repository": {
@@ -17,12 +16,16 @@
     "url": "https://github.com/jo0ger/jooger.me-admin.git"
   },
   "dependencies": {
+    "ali-oss": "^4.12.2",
     "axios": "^0.16.2",
     "bezier-easing": "^2.0.3",
-    "element-ui": "^2.0.0-rc.1",
+    "element-ui": "^2.2.0",
     "highlight.js": "^9.12.0",
     "marked": "^0.3.6",
+    "moment": "^2.20.1",
+    "particles.js": "^2.0.0",
     "qrcode": "^0.9.0",
+    "raven-js": "^3.22.3",
     "vue": "^2.5.2",
     "vue-router": "^2.8.1",
     "vuex": "^2.5.0"

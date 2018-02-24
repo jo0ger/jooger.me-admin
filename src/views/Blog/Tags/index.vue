@@ -138,7 +138,7 @@
         }
       },
       handleDelete (index, data) {
-        this.$confirm('<strong>此操作将永久删除该标签，并且删除所有文章关联关系，是否继续?</strong>', '提示', {
+        this.$confirm('<strong>此操作将永久删除该标签，是否继续?</strong>', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           dangerouslyUseHTMLString: true,

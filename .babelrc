@@ -14,7 +14,7 @@
       "component",
       {
         "libraryName": "element-ui",
-        "styleLibraryName": "~src/assets/theme"
+        "styleLibraryName": "theme-chalk"
       }
     ]
   ],

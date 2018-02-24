@@ -17,7 +17,6 @@ const BlogArticleCreate = () => import(/* webpackChunkName: "BlogArticleCreate" 
 const BlogCategories = () => import(/* webpackChunkName: "BlogCategories" */ '@/views/Blog/Categories')
 const BlogTags = () => import(/* webpackChunkName: "BlogTags" */ '@/views/Blog/Tags')
 const Setting = () => import(/* webpackChunkName: "Setting" */ '@/views/Setting')
-const Message = () => import(/* webpackChunkName: "Message" */ '@/views/Message')
 const Auth = () => import(/* webpackChunkName: "Auth" */ '@/views/Auth')
 const Moment = () => import(/* webpackChunkName: "Moment" */ '@/views/Moment')
 
@@ -148,16 +147,6 @@ export default [
     meta: {
       title: '全局设置',
       icon: 'setting'
-    }
-  },
-  {
-    path: '/message',
-    name: 'Message',
-    component: Message,
-    meta: {
-      title: '消息',
-      icon: 'message',
-      hidden: true
     }
   },
   {

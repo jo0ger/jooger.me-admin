@@ -42,7 +42,11 @@ import {
   Dialog,
   Autocomplete,
   Switch,
-  DatePicker
+  DatePicker,
+  Upload,
+  Radio,
+  RadioGroup,
+  InputNumber
 } from 'element-ui'
 
 Vue.use(Loading)
@@ -85,3 +89,7 @@ Vue.component(Dialog.name, Dialog)
 Vue.component(Autocomplete.name, Autocomplete)
 Vue.component(Switch.name, Switch)
 Vue.component(DatePicker.name, DatePicker)
+Vue.component(Upload.name, Upload)
+Vue.component(Radio.name, Radio)
+Vue.component(RadioGroup.name, RadioGroup)
+Vue.component(InputNumber.name, InputNumber)
