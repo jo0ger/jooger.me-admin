@@ -83,6 +83,24 @@
         <el-form-item label="排序">
           <el-input-number v-model="model.list" :step="1" :min="1"></el-input-number>
         </el-form-item>
+        <el-form-item label="扩展">
+          <el-row style="margin-bottom: 16px" :gutter="0" v-for="(ext, index) in model.extends" :key="index">
+            <el-col :span="10" style="margin-right: 16px;">
+              <el-input v-model="ext.key" placeholder="Key"></el-input>
+            </el-col>
+            <el-col :span="10" style="margin-right: 16px;">
+              <el-input v-model="ext.value" placeholder="Value"></el-input>
+            </el-col>
+            <el-col :span="2">
+              <el-button type="danger" size="mini" plain round icon='el-icon-minus' @click="handleDeleteExt(index)"></el-button>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="24">
+              <el-button type="primary" size="small" icon='el-icon-plus' style="width: 100%" @click="handleAddExt">添加</el-button>
+            </el-col>
+          </el-row>
+        </el-form-item>
       </el-form>
       <div slot="footer">
         <el-button @click="handleCloseEditBox">取 消</el-button>
@@ -137,7 +155,8 @@
           model: {
             name: this.model.name,
             description: this.model.description,
-            list: this.model.list
+            list: this.model.list,
+            extends: this.model.extends ? this.model.extends.filter(ext => ext.key && ext.value) : []
           }
         })
         if (success) {
@@ -158,6 +177,15 @@
       },
       handleCloseEditBox () {
         this.model = null
+      },
+      handleAddExt () {
+        this.model.extends.push({
+          key: '',
+          value: ''
+        })
+      },
+      handleDeleteExt (index) {
+        this.model.extends.splice(index, 1)
       }
     }
   }
