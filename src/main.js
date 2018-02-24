@@ -16,10 +16,12 @@ Vue.prototype.$eventBus = eventBus
 composeWithStore(store)
 
 /* eslint-disable no-new */
-new Vue({
+const app = new Vue({
   el: '#app',
   router,
   store,
   template: '<App/>',
   components: { App }
 })
+
+export default app

@@ -136,7 +136,8 @@
           id: this.model._id,
           model: {
             name: this.model.name,
-            description: this.model.description
+            description: this.model.description,
+            list: this.model.list
           }
         })
         if (success) {

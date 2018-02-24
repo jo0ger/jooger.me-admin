@@ -58,10 +58,11 @@ export const mutations = {
   [EDIT_ITEM_FAILURE]: state => (state.detail.editing = false),
   [EDIT_ITEM_SUCCESS]: (state, data) => {
     state.detail.editing = false
+    const index = state.list.data.findIndex(item => item._id === data._id)
+    data = Object.assign({}, state.list.data[index], data)
     if (state.detail) {
       state.detail.data = data
     }
-    const index = state.list.data.findIndex(item => item._id === data._id)
     if (index > -1) {
       state.list.data.splice(index, 1, data)
     }
@@ -86,7 +87,9 @@ export const mutations = {
   [CREATE_ITEM_FAILURE]: state => (state.list.creating = false),
   [CREATE_ITEM_SUCCESS]: (state, data) => {
     state.list.creating = false
-    state.list.data.unshift(data)
+    state.list.data.unshift(Object.assign(data, {
+      count: 0
+    }))
   }
 }
 
